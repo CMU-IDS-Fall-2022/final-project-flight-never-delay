@@ -17,15 +17,17 @@ if __name__ == '__main__':
     button7 = st.sidebar.button("Let's predict for a flight!")
     if button1:
         intro()
-    if button2:
+    elif button2:
         vis_airline_company()
-    if button3:
+    elif button3:
         vis_flight_time()
-    if button4:
+    elif button4:
         vis_flight_distance()
-    if button5:
+    elif button5:
         vis_flight_destination()
-    if button6:
+    elif button6:
         model()
-    if button7:
+    elif button7:
         predict()
+    else:
+        intro()
