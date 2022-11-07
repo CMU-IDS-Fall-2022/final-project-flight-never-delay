@@ -1,7 +1,11 @@
 import streamlit as st
 
-def model():
+def training():
     st.header("Model training")
 
-def predict():
+def inference():
     st.header("Predict for a flight")
+
+def pred():
+    training()
+    inference()
