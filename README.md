@@ -1,6 +1,6 @@
 # CMU Interactive Data Science Final Project
 
-* **Online URL**: TODO
+* **Online URL**: https://cmu-ids-fall-2022-final-project-flight-never-delay-app-v0b442.streamlit.app/
 * **Team members**:
   * Contact person: TODO@andrew.cmu.edu
   * TODO@andrew.cmu.edu
