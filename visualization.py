@@ -9,6 +9,11 @@ def load_airline_data():
     path = "data/airline.csv"
     return pd.read_csv(path)
 
+@st.cache
+def load_time_data():
+    path = "data/time.csv"
+    return pd.read_csv(path)
+
 def vis_airline_company():
     st.header("Airline company")
     st.write("Flight delay rate is an important factor when measuring the reliability of an airline company.")
@@ -65,8 +70,10 @@ def vis_airline_company():
              "Some airlines like Skywest Airlines and JetBlue Airlines do need to pay more attention to their flight delay issues.")
     st.write("To sum up, airline companies behave very much differently in dealing with flight delay problems. "
              "It is safe to deduce that choosing an airline company would influence flight delay.")
+
 def vis_flight_time():
     st.header("Flight time")
+    df = load_time_data()
 
 def vis_flight_distance():
     st.header("Flight distance")
