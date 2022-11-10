@@ -99,12 +99,12 @@ We would like to sketch a map for identifying the relationship between DEP_DELAY
 **Integrated chart 1**
 Data included: Time Scale, Delay Time, Airline Company(and the number of flights they have), Total Flights, Percentage of Delayed Flights
 Users will first select the time scale they would like to inspect. For the given time scale, we would show the distribution of delay time for each month/day. And users could use the bottom chart to further narrow down to the airline they would like to inspect.
-![img17](image/img_17.png)
+![img17](image/img_17.jpg)
 
 **Integrated chart 2**
 Data included: Origin, Destination, Total Flights, Percentage of Delayed Flights
 When user hover on one airport, the routes between this airport as the origin to the other destinations will show as rules. The size of the rule indicates the total amount of routes between two airports, and the color of the rule indicates the percentage of delayed flights among all the flights.
-![img18](image/img_18.png)
+![img18](image/img_18.jpg)
 
 #### Prediction
 With the insights we get from the previous steps, we would like train a Regression machine learning model that predicts the potential delay time and delay reasons from origin, destination, airline company, departure time.
