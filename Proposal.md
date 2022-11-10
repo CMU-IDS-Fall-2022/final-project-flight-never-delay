@@ -28,7 +28,7 @@ We plan to split our project evenly between our group members. The main componen
 * Building the frontend interface to handle user interaction and display the visualizations. We plan to use Streamlit.
 
 ### Appendix
-We plan to use the [Bureau of Transportation Statistics - On-Time : Marketing Carrier On-Time Performance dataset](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGK&QO_fu146_anzr=b0-gvzr) for our project. The dataset contains 563,738 data points of flight delays from January 2018 to August 2022 in the US (~300MB csv file). Each data points contains detailed information such as flight date, airline, origin/destination airport, distance between airports, and delay time (including carrier delay, weather delay, security delay, etc.).
+We plan to use the [Bureau of Transportation Statistics - On-Time : Marketing Carrier On-Time Performance dataset](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGK&QO_fu146_anzr=b0-gvzr) for our project. The dataset contains many millions data points of flight delays from January 2018 to August 2022 in the US. Each data points contains detailed information such as flight date, airline, origin/destination airport, distance between airports, and delay time (including carrier delay, weather delay, security delay, etc.).
 
 
 
