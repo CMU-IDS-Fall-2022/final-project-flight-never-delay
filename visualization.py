@@ -3,6 +3,8 @@ import pandas as pd
 from constants import airline_name
 import seaborn as sns
 import matplotlib.pyplot as plt
+from vega_datasets import data
+import altair as alt
 
 @st.cache
 def load_airline_data():
@@ -12,6 +14,11 @@ def load_airline_data():
 @st.cache
 def load_time_data():
     path = "data/time.csv"
+    return pd.read_csv(path)
+
+@st.cache
+def load_destination_data():
+    path = "data/destination.csv"
     return pd.read_csv(path)
 
 def vis_airline_company():
@@ -78,8 +85,31 @@ def vis_flight_time():
 def vis_flight_distance():
     st.header("Flight distance")
 
+def map_chart():
+    states = alt.topo_feature(data.us_10m.url, feature='states')
+    base = alt.Chart(states).mark_geoshape(fill='lightgray', stroke='black', strokeWidth=0.5)
+    df = load_destination_data()
+    ansi = pd.read_csv('https://www2.census.gov/geo/docs/reference/state.txt', sep='|')
+    ansi.columns = ['id', 'abbr', 'state', 'statens']
+    ansi = ansi[['id', 'state', 'abbr']]
+    geo_data = df.groupby('DEST_STATE')['ARR_DELAY'].mean().reset_index()
+    geo_data.columns = ['abbr', 'time']
+    geo_data = pd.merge(geo_data, ansi, how='left', on='abbr')
+    alt_fig = alt.Chart(states).mark_geoshape().encode(
+        color='time:Q',
+        tooltip=['state:N', alt.Tooltip('time:Q')]
+	).transform_lookup(
+        lookup='id',
+        from_=alt.LookupData(geo_data, 'id', ['time','state'])
+	).project(
+        type='albersUsa'
+	)
+    return base + alt_fig
+
 def vis_flight_destination():
     st.header("Flight destination")
+    st.altair_chart(map_chart()) 
+
 
 def vis():
     st.write("# Which factors lead to flight delay?")
