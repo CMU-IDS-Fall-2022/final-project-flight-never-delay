@@ -57,13 +57,13 @@ Our final dataset contains 1,141,693 data points with 29 fields.
 
 
 **Data analysis/exploration**
-<<<<<<< HEAD
+
+
 
 ![basic](image/img_3.png)
 
-=======
-![img3](image/img_3.png)
->>>>>>> 5c79c2b4fa55349a710f3265133a26d9da372e6e
+
+
 We explored the relationship between DEP_DELAY and factors including MONTH, DAY_OF_MONTH, DAY_OF_WEEK, OP_UNIQUE_CARRIER, ORIGIN, DEST, DEP_TIME, and DISTANCE.
 These explorations provide us with the following inspirations:
 
