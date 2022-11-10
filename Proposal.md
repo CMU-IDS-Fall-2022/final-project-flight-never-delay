@@ -51,12 +51,12 @@ For data processing, we first drop duplicates and remove data points that contai
 We also augment our dataset with more fine-grained geographic information as we would like to create a geographic map to visualize the flight delays. Therefore, we map airport location (ORIGIN, DEST) to US state names and coordinates (latitude and longitude) from a [Kaggle dataset](https://www.kaggle.com/datasets/usdot/flight-delays?select=airports.csv). This adds 6 more fields to our dataset (ORIGIN_STATE, ORIGIN_LAT, ORIGIN_LONG, DEST_STATE, DEST_LAT, DEST_LONG). We remove data points that include airports with unknown geographical locations.
 
 Our final dataset contains 1,141,693 data points with 29 fields.
-![final dataset](image/img_2.png)
+![img2](image/img_2.png)
 
 
 
 **Data analysis/exploration**
-![basic](image/img_3.png)
+![img3](image/img_3.png)
 We explored the relationship between DEP_DELAY and factors including MONTH, DAY_OF_MONTH, DAY_OF_WEEK, OP_UNIQUE_CARRIER, ORIGIN, DEST, DEP_TIME, and DISTANCE.
 These explorations provide us with the following inspirations:
 * Divide the DEP_DELAY(delay time) into different intervals as there are too many data points, which is hard for us to tell the correlations. 
