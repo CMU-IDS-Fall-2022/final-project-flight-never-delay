@@ -17,6 +17,11 @@ def load_time_data():
     return pd.read_csv(path)
 
 @st.cache
+def load_distance_data():
+    path = "data/distance.csv"
+    return pd.read_csv(path)
+
+@st.cache
 def load_destination_data():
     path = "data/destination.csv"
     return pd.read_csv(path)
@@ -80,10 +85,55 @@ def vis_airline_company():
 
 def vis_flight_time():
     st.header("Flight time")
-    df = load_time_data()
+    time_scale = st.radio("Please select a time scale",
+                          ("Quarter", "Month", "Day of Week"))
+    df_time = load_time_data()
+    if time_scale == "Quarter":
+        fig = plt.figure(figsize=(10, 4*1.5))
+        ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="QUARTER", showfliers=False, orient="h", width=0.4)
+        plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
+        plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
+        plt.ylabel('Quarter', fontsize=16, weight='bold', labelpad=10)
+        plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
+        st.pyplot(fig)
+    elif time_scale == "Month":
+        fig = plt.figure(figsize=(10, 12 * 1))
+        ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="MONTH", showfliers=False, orient="h", width=0.4)
+        plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
+        plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
+        plt.ylabel('Month', fontsize=16, weight='bold', labelpad=10)
+        plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
+        st.pyplot(fig)
+    else:
+        fig = plt.figure(figsize=(10, 7 * 1))
+        ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="DAY_OF_WEEK", showfliers=False, orient="h", width=0.4)
+        plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
+        plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
+        plt.ylabel('Day of Week', fontsize=16, weight='bold', labelpad=10)
+        plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
+        st.pyplot(fig)
 
 def vis_flight_distance():
     st.header("Flight distance")
+    df = load_distance_data()
+    df_distance = df[["DISTANCE", "ARR_DELAY"]]
+    def delay_type(x):
+        if x <= 20:
+            return 0
+        elif x <= 60:
+            return 1
+        return 2
+    df_distance["TYPE"] = df_distance["ARR_DELAY"].apply(delay_type)
+    df_distance = df_distance[df_distance["ARR_DELAY"] < 120]
+    df_distance = df_distance[df_distance["DISTANCE"] < 2000]
+    df_distance = df_distance.sample(10000)
+    fig = plt.figure(figsize=(10, 10))
+    ax = sns.histplot(data=df_distance, x="ARR_DELAY", y="DISTANCE", bins=20)
+    plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
+    plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
+    plt.ylabel('Flight Distance (miles)', fontsize=16, weight='bold', labelpad=10)
+    plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
+    st.pyplot(fig)
 
 def map_chart():
     states = alt.topo_feature(data.us_10m.url, feature='states')
