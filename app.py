@@ -1,9 +1,11 @@
 import streamlit as st
+import altair as alt
+from constants import delay_category
 import gdown
 import pandas as pd
 import pandas_profiling
 from streamlit_pandas_profiling import st_profile_report
-# from streamlit_extras.switch_page_button import switch_page
+from streamlit_extras.switch_page_button import switch_page
 
 @st.cache(suppress_st_warning=True)
 def get_data(filename):
@@ -15,28 +17,6 @@ def get_data(filename):
 def profiler(df):
     pr = df.profile_report()
     st_profile_report(pr)
-
-def switch_page(page_name):
-    from streamlit import _RerunData, _RerunException
-    from streamlit.source_util import get_pages
-    def standardize_name(name: str) -> str:
-        return name.lower().replace("_", " ")
-    page_name = standardize_name(page_name)
-    pages = get_pages("app.py")
-    for page_hash, config in pages.items():
-        if standardize_name(config["page_name"]) == page_name:
-            raise _RerunException(
-                _RerunData(
-                    page_script_hash=page_hash,
-                    page_name=page_name,
-                )
-            )
-    page_names = [standardize_name(config["page_name"]) for config in pages.values()]
-
-import streamlit as st
-import altair as alt
-import pandas as pd
-from constants import delay_category
 
 def intro():
     st.header("Project Flight Never Delay ✈️")
@@ -69,9 +49,9 @@ if __name__ == '__main__':
     intro()
     st.write("Click on one of the following buttons to continue.")
     if st.button("Predict my flight! 🧠"):
-        switch_page("prediction")
+        switch_page("Prediction")
     if st.button("Visualize correlations in the data! 📊"):
-        switch_page("visualization")
+        switch_page("Visualization")
     st.markdown("""---""")
     filename = "data-coordinates.csv"
     get_data(filename)
