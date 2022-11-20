@@ -3,3 +3,4 @@ vega_datasets
 scikit-learn
 gdown
 streamlit-pandas-profiling
+pandas
