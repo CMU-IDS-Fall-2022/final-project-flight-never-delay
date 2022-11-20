@@ -167,3 +167,5 @@ def vis():
     vis_flight_time()
     vis_flight_distance()
     vis_flight_destination()
+
+vis()

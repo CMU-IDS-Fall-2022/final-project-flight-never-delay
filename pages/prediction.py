@@ -63,3 +63,5 @@ def pred():
             st.markdown('\n### Your flight will arrive %d minutes early.\n### The probability of cancellation is %.2f%%.' % (delay_pred, cancel_pred))
         else:
             st.markdown('\n### Your flight will arrive %d minutes late.\n### The probability of cancellation is %.2f%%.' % (delay_pred, cancel_pred))
+
+pred()
