@@ -1,6 +1,7 @@
+pandas
+gdown
 seaborn==0.12.1
 vega_datasets
 scikit-learn
-gdown
 streamlit-pandas-profiling
-pandas
+streamlit-extras
