@@ -69,9 +69,9 @@ if __name__ == '__main__':
     intro()
     st.write("Click on one of the following buttons to continue.")
     if st.button("Predict my flight! 🧠"):
-        switch_page("Prediction")
+        switch_page("prediction")
     if st.button("Visualize correlations in the data! 📊"):
-        switch_page("Visualization")
+        switch_page("visualization")
     st.markdown("""---""")
     filename = "data-coordinates.csv"
     get_data(filename)
