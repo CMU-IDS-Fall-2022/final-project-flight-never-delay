@@ -4,9 +4,9 @@ import pandas as pd
 from constants import *
 import datetime
 
-transformer_filename = 'Streamlit_rakuten/saved_models/data_transformer.sav'
-delay_filename = 'Streamlit_rakuten/saved_models/delay_lin_reg.sav'
-cancel_filename = 'Streamlit_rakuten/saved_models/cancel_log_reg.sav'
+transformer_filename = 'saved_models/data_transformer.sav'
+delay_filename = 'saved_models/delay_lin_reg.sav'
+cancel_filename = 'saved_models/cancel_log_reg.sav'
 
 transformer = pickle.load(open(transformer_filename, 'rb'))
 delay_lin_reg_model = pickle.load(open(delay_filename, 'rb'))
