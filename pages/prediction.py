@@ -24,20 +24,18 @@ def pred():
             airline = st.selectbox("Airline",
                                     options=[key + ' : ' + value for key, value in airline_name.items()]).split(" : ")[0]
             date = st.date_input("Departure Date", value = datetime.date.today(), min_value = datetime.datetime(2021, 1, 1), max_value = datetime.datetime(2023, 12, 30))
-        with c2:
-            flight_num = st.text_input('Flight Number', '1111')
-        c3, c4 = st.columns(2)
-        with c3:
             dpt_airport = st.selectbox("From Airport",
                                     options=airports, index = 236)
-            dpt_time = int(st.time_input('Expected Departure Time', datetime.time(13,15)).strftime("%-H%M"))
-        with c4:
+            dpt_time = int(st.time_input('Expected Departure Time', datetime.time(13,15)).strftime("%-H%M"))       
+        with c2:
+            flight_num = st.text_input('Flight Number', '1111')
+            arr_date = st.date_input("Arrival Date", value = datetime.date.today(), min_value = datetime.datetime(2021, 1, 1), max_value = datetime.datetime(2023, 12, 30))
             arv_airport = st.selectbox("To Airport",
                                     options=airports, index = 39)
             arv_time = int(st.time_input('Expected Arrival Time', datetime.time(15,00)).strftime("%-H%M"))
 
-        if not flight_num.isnumeric():
-            st.write('Please enter a numeric value(0-9).')
+        if not flight_num.isnumeric() or int(flight_num) < 0 or int(flight_num) > 9999:
+            st.write('Please enter a valid flight number between 1 and 9999.')
             valid_input = False
         elif dpt_airport == arv_airport:
             st.write('Please select different departure and arrival airport.')
