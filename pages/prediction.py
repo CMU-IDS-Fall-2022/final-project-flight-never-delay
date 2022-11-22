@@ -5,11 +5,19 @@ from constants import *
 import datetime
 
 transformer_filename = 'saved_models/data_transformer.sav'
-delay_filename = 'saved_models/delay_lin_reg.sav'
+delay_carrier_filename = 'saved_models/delay_carrier_lin_reg.sav'
+delay_weather_filename = 'saved_models/delay_weather_lin_reg.sav'
+delay_nas_filename = 'saved_models/delay_nas_lin_reg.sav'
+delay_security_filename = 'saved_models/delay_security_lin_reg.sav'
+delay_late_aircraft_filename = 'saved_models/delay_late_aircraft_lin_reg.sav'
 cancel_filename = 'saved_models/cancel_log_reg.sav'
 
 transformer = pickle.load(open(transformer_filename, 'rb'))
-delay_lin_reg_model = pickle.load(open(delay_filename, 'rb'))
+delay_carrier_lin_reg_model = pickle.load(open(delay_carrier_filename, 'rb'))
+delay_weather_lin_reg_model = pickle.load(open(delay_weather_filename, 'rb'))
+delay_nas_lin_reg_model = pickle.load(open(delay_nas_filename, 'rb'))
+delay_security_lin_reg_model = pickle.load(open(delay_security_filename, 'rb'))
+delay_late_aircraft_lin_reg_model = pickle.load(open(delay_late_aircraft_filename, 'rb'))
 cancel_lin_reg_model = pickle.load(open(cancel_filename, 'rb'))
 
 
@@ -56,15 +64,26 @@ def pred():
                 'ORIGIN', 'DEST', 'CRS_DEP_TIME', 
                 'CRS_ARR_TIME'])
         input = transformer.transform(dummy_df)
-        delay_pred = delay_lin_reg_model.predict(input)[0]
+        delay_carrier_pred = delay_carrier_lin_reg_model.predict(input)[0]
+        delay_weather_pred = delay_weather_lin_reg_model.predict(input)[0]
+        delay_nas_pred = delay_nas_lin_reg_model.predict(input)[0]
+        delay_security_pred = delay_security_lin_reg_model.predict(input)[0]
+        delay_late_aircraft_pred = delay_late_aircraft_lin_reg_model.predict(input)[0]
+
+
         cancel_pred = cancel_lin_reg_model.predict_proba(input)[0][1] * 100
-        if delay_pred < 0:
-            status = "early"
-        else:
-            status = "delayed"
-        m1, m2 = st.columns(2)
-        m1.metric(label=f"Your flight may be {status} for", value=f"{round(delay_pred)} minutes")
-        m2.metric(label=f"The probability of your flight being cancelled is", value=f"{round(cancel_pred)}%")
-        # st.markdown(f'\n### Your flight will arrive %d minutes {status}.\n### The probability of cancellation is %.2f%%.' % (delay_pred, cancel_pred))
+        total_delay = delay_weather_pred + delay_carrier_pred + delay_nas_pred + delay_security_pred + delay_late_aircraft_pred
+
+
+        m1, m2, = st.columns(2)
+        with m1:
+            st.metric(label=f"Your flight may be late for", value=f"{round(total_delay)} minutes")
+            st.metric(label=f"Your flight may be late due to weather for", value=f"{round(delay_weather_pred)} minutes")
+            st.metric(label=f"Your flight may be late due to nas for", value=f"{round(delay_nas_pred)} minutes")
+            st.metric(label=f"Your flight may be late due to late aircraft for", value=f"{round(delay_late_aircraft_pred)} minutes")
+        with m2:
+            st.metric(label=f"The probability of your flight being cancelled is", value=f"{round(cancel_pred)}%")
+            st.metric(label=f"Your flight may be late due to carrier for", value=f"{round(delay_carrier_pred)} minutes")
+            st.metric(label=f"Your flight may be late due to security for", value=f"{round(delay_security_pred)} minutes")
 
 pred()
