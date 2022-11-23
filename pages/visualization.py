@@ -39,10 +39,7 @@ def vis_airline_company():
                                        "DL:Delta Airlines", "UA:United Airlines", "B6:JetBlue Airlines"])
     airlines_abbr = [x.split(":")[0] for x in airlines]
     df_airline = df[df["OP_UNIQUE_CARRIER"].isin(airlines_abbr)]
-    st.write("First, we would like to compare the delay counts in a bar chart. "
-             "Assume t is the flight delay time. If t is smaller than 20, it is approximately on time. "
-             "If t is between 20 and 60, it is a small delay that most people can tolerate."
-             "If t is bigger than 60, the flight encounters a serious delay.")
+
     def delay_type(x):
         if x <= 20:
             return 0
@@ -50,6 +47,31 @@ def vis_airline_company():
             return 1
         return 2
     df_airline["TYPE"] = df_airline["ARR_DELAY"].apply(delay_type)
+
+    st.write("Firstly, we compared the delay time in a box plot. "
+             "The median and the interquartile range in each box well demonstrate the performance of each airline in flight delay. "
+             "Alaska Airlines, Southwest Airlines and Delta Airlines are the best 3 performers. "
+             "Some airlines like Skywest Airlines and JetBlue Airlines do need to pay more attention to their flight delay issues.")
+    fig2 = plt.figure(figsize=(10, len(airlines_abbr) * 1.5))
+    ax = sns.boxplot(data=df_airline, x="ARR_DELAY", y="OP_UNIQUE_CARRIER", showfliers=False, width=0.4)
+    ax.yaxis.label.set_visible(False)
+    new_labels = [airline_name[x.get_text()] for x in ax.get_yticklabels()]
+    ax.set_yticklabels(new_labels)
+    plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
+    plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
+    plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
+    st.pyplot(fig2)
+
+    st.write("Based on the box plot, we identified that the delay time could be "
+             "categorized into <20 minutes, 20-60 minutes, and >60 minutes. "
+             "If it is smaller than 20, it is approximately on time. "
+             "If it is between 20 and 60, it is a small delay that most people can tolerate. "
+             "If it is larger than 60, the flight encounters a serious delay.")
+    st.write("With the new categories of delay, it is easy to observe that the proportion of delays varies from "
+             "airline to airline. Some airlines like JetBlue Airlines behave badly. They have a relatively "
+             "low on-time rate and a relatively high large delay rate. "
+             "Although SouthWest Airlines has the largest number of flight delays, these delays are mainly "
+             "small delays and the company maintains a pretty good on-time rate.")
     fig1 = plt.figure(figsize=(10, len(airlines_abbr)*1.5))
     ax = sns.countplot(data=df_airline, y="OP_UNIQUE_CARRIER", hue="TYPE")
     ax.yaxis.label.set_visible(False)
@@ -63,32 +85,19 @@ def vis_airline_company():
     new_legend.get_texts()[2].set_text("large delay (>60 min)")
     plt.xlabel('Number of flights', fontsize=16, weight='bold', labelpad=10)
     st.pyplot(fig1)
-    st.write("It is easy to observe that the proportion of delays varies from airline to airline. "
-             "Some airlines like JetBlue Airlines behave badly. They have a relatively low on-time rate and a relatively high large delay rate. "
-             "Although Southwest Airlines has the largest number of flight delays, these delays are mainly small delays and "
-             "the company maintains a pretty good on-time rate.")
-    st.write("Second, we would like to walk deep into comparing the delay time in a box plot.")
-    fig2 = plt.figure(figsize=(10, len(airlines_abbr)*1.5))
-    ax = sns.boxplot(data=df_airline, x="ARR_DELAY", y="OP_UNIQUE_CARRIER", showfliers = False, width=0.4)
-    ax.yaxis.label.set_visible(False)
-    new_labels = [airline_name[x.get_text()] for x in ax.get_yticklabels()]
-    ax.set_yticklabels(new_labels)
-    plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
-    plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
-    plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
-    st.pyplot(fig2)
-    st.write("The median and the interquartile range in each box well demonstrate the performance of each airline in flight delay. "
-             "Alaska Airlines, Southwest Airlines and Delta Airlines are the best 3 performers. "
-             "Some airlines like Skywest Airlines and JetBlue Airlines do need to pay more attention to their flight delay issues.")
+
     st.write("To sum up, airline companies behave very much differently in dealing with flight delay problems. "
              "It is safe to deduce that choosing an airline company would influence flight delay.")
 
 def vis_flight_time():
     st.header("Flight time")
+    st.write("Next, we would like to sketch a box plot to identify the relationship between delay time and "
+             "flight departure time (Quarter / Month / Day of Week).")
     time_scale = st.radio("Please select a time scale",
                           ("Quarter", "Month", "Day of Week"))
     df_time = load_time_data()
     if time_scale == "Quarter":
+        st.write("It can be observed that a long flight delay is more likely to happen in Quarter 2 & 3 than in Quarter 1 & 4.")
         fig = plt.figure(figsize=(10, 4*1.5))
         ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="QUARTER", showfliers=False, orient="h", width=0.4)
         plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
@@ -97,6 +106,7 @@ def vis_flight_time():
         plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
         st.pyplot(fig)
     elif time_scale == "Month":
+        st.write("It can be observed that summer is the peak season for flight delays.")
         fig = plt.figure(figsize=(10, 12 * 1))
         ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="MONTH", showfliers=False, orient="h", width=0.4)
         plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
@@ -105,6 +115,7 @@ def vis_flight_time():
         plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
         st.pyplot(fig)
     else:
+        st.write("It can be observed that it is more likely to encounter a flight delay on Monday.")
         fig = plt.figure(figsize=(10, 7 * 1))
         ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="DAY_OF_WEEK", showfliers=False, orient="h", width=0.4)
         plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
@@ -112,9 +123,16 @@ def vis_flight_time():
         plt.ylabel('Day of Week', fontsize=16, weight='bold', labelpad=10)
         plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
         st.pyplot(fig)
+    st.write("To sum up, flight time is also an important factor leading to flight delay. "
+             "Long flight delays are more likely to happen during the summer or on Monday.")
 
 def vis_flight_distance():
     st.header("Flight distance")
+    st.write("Next, we would like to sketch a binned scattered plot to identify the relationship between delay time "
+             "and flight distance. The data points in the plot are grouped into bins with a circle in each bin to "
+             "represent the amount of flights in that bin and its percentage to the total number of flights.")
+    data_type = st.radio("Please select a data type",
+                          ("Percentage", "Amount"))
     df = load_distance_data()
     df_distance = df[["DISTANCE", "ARR_DELAY"]]
     def delay_type(x):
@@ -126,14 +144,46 @@ def vis_flight_distance():
     df_distance["TYPE"] = df_distance["ARR_DELAY"].apply(delay_type)
     df_distance = df_distance[df_distance["ARR_DELAY"] < 120]
     df_distance = df_distance[df_distance["DISTANCE"] < 2000]
-    df_distance = df_distance.sample(10000)
-    fig = plt.figure(figsize=(10, 10))
-    ax = sns.histplot(data=df_distance, x="ARR_DELAY", y="DISTANCE", bins=20)
-    plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
-    plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
-    plt.ylabel('Flight Distance (miles)', fontsize=16, weight='bold', labelpad=10)
-    plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
-    st.pyplot(fig)
+    df_distance = df_distance.sample(50000, random_state=0)
+
+    # fig = plt.figure(figsize=(10, 10))
+    # ax = sns.histplot(data=df_distance, x="ARR_DELAY", y="DISTANCE", bins=20)
+    # plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
+    # plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
+    # plt.ylabel('Flight Distance (miles)', fontsize=16, weight='bold', labelpad=10)
+    # plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
+    # st.pyplot(fig)
+
+    if data_type == "Percentage":
+        fig1 = alt.Chart(df_distance).transform_bin(
+            "ARR_DELAY_bin", field="ARR_DELAY"
+        ).transform_joinaggregate(
+            total="count()",
+            groupby=["ARR_DELAY_bin"]
+        ).transform_joinaggregate(
+            in_group="count()",
+            groupby=["ARR_DELAY_bin", "DISTANCE"]
+        ).transform_calculate(
+            percentage=alt.datum.in_group / alt.datum.total
+        ).mark_circle().encode(
+            alt.X("ARR_DELAY:Q", bin=True, axis=alt.Axis(title="Delay Time (minutes)", titleFontSize=20)),
+            alt.Y("DISTANCE", bin=True, axis=alt.Axis(title="Flight Distance (miles)", titleFontSize=20)),
+            alt.Size("percentage:Q", legend=alt.Legend(format='%', title='Percentage', titleFontSize=15))
+        )
+        fig1.width = 750
+        fig1.height = 400
+        st.altair_chart(fig1)
+    else:
+        fig2 = alt.Chart(df_distance).mark_circle().encode(
+            alt.X("ARR_DELAY:Q", bin=True, axis=alt.Axis(title="Delay Time (minutes)", titleFontSize=20)),
+            alt.Y("DISTANCE:Q", bin=True, axis=alt.Axis(title="Flight Distance (miles)", titleFontSize=20)),
+            size="count()"
+        )
+        fig2.width = 750
+        fig2.height = 400
+        st.altair_chart(fig2)
+    st.write("It can be seen in the plot that flight distance seems not to be a key factor to delay time.")
+
 
 def map_chart():
     states = alt.topo_feature(data.us_10m.url, feature='states')
