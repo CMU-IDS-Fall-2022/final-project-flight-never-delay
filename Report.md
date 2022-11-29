@@ -51,9 +51,13 @@ We studied the relationship between flight delay time and some factors including
 
 + Flight Departure Time
 
+<div align=center><img width="1000" height="400" src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report2.png"/></div>
+
 ![](https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report2.png)
 
 + Flight Distance
+
+<div align=center><img width="1000" height="400" src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report3.png"/></div>
 
 ![](https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report3.png)
 
