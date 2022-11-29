@@ -57,9 +57,7 @@ To sum up, airline companies behave very much differently in dealing with flight
 
 + Flight Departure Time
 
-We then sketched another box plot to study the distributions of flight delay time values based on flight departure time (Quarter / Month / Day of Week).
-
-It can be observed that: (1) a long flight delay is more likely to happen in Quarter 2 & 3 than in Quarter 1 & 4; (2) it is more likely to encounter a flight delay on Monday.
+We then sketched another box plot to study the distributions of flight delay time values based on flight departure time (Quarter / Month / Day of Week). It can be observed that: (1) a long flight delay is more likely to happen in Quarter 2 & 3 than in Quarter 1 & 4; (2) it is more likely to encounter a flight delay on Monday.
 
 <div align=center><img width="900" height="350" src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report2.png"/></div>
 
