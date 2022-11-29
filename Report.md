@@ -45,7 +45,7 @@ We studied the relationship between flight delay time and some factors including
 
 + Airline Companies
 
-<img width="150" height="150" src="https://img-blog.csdn.net/20161028230559575](https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report1.png)"/>
+<img width="150" height="150" src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report1.png"/>
 
 ![](https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report1.png)
 
