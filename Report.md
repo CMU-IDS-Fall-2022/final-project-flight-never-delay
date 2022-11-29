@@ -11,7 +11,53 @@ Short (~250 words) abstract of the concrete data science problem and how the sol
 
 ## Methods
 
+### Data Processing and Interface
+
+
+
+### Visualization
+
+The main challenge we faced when doing visualization was choosing the best charts for our data.
+
++ Box Plot
+
+We used box plots to show distributions of flight delay values based on airline companies and flight departure time. They can display the five-number summary of a group of data. The five-number summary includes the minimum, first quartile, median, third quartile, and maximum.
+
++ Binned Scatter Plot
+
+We used binned scatter plots to investigate the relationship between flight delay time and flight distance. The data points in a binned scatter plot are grouped into bins, and an aggregate statistic is used to summarize each bin. For example, we can use a circular area to represent the count and show the density of data points.
+
++ Map
+
+
+
++ Interactive Chart with Cross-Highlight
+
+
+
+### Machine Learning Model
+
+
+
 ## Results
+
+We studied the relationship between flight delay time and some factors including airline companies, flight departure time, flight distance and flight destination.
+
++ Airline Companies
+
+
+
++ Flight Departure Time
+
+
+
++ Flight Distance
+
+
+
++ Flight Destination
+
+
 
 ## Discussion
 
