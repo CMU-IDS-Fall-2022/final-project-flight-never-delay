@@ -57,19 +57,21 @@ To sum up, airline companies behave very much differently in dealing with flight
 
 + Flight Departure Time
 
+We then sketched another box plot to study the distributions of flight delay time values based on flight departure time (Quarter / Month / Day of Week).
 
+It can be observed that: (1) a long flight delay is more likely to happen in Quarter 2 & 3 than in Quarter 1 & 4; (2) it is more likely to encounter a flight delay on Monday.
 
 <div align=center><img width="900" height="350" src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report2.png"/></div>
 
-
+To sum up, flight time is also an important factor leading to flight delay. Long flight delays are more likely to happen during the summer or on Monday.
 
 + Flight Distance
 
-
+We then drew a binned scattered plot to identify the relationship between delay time and flight distance. The data points in the plot are grouped into bins with a circle in each bin to represent the amount of flights in that bin and its percentage to the total number of flights.
 
 <div align=center><img width="700" height="300" src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report3.png"/></div>
 
-
+It can be seen in the plot that flight distance seems not to be a key factor to delay time.
 
 + Flight Destination
 
