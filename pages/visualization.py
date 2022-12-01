@@ -26,6 +26,16 @@ def load_destination_data():
     path = "data/destination.csv"
     return pd.read_csv(path)
 
+@st.cache
+def load_airline_time_data():
+    path = "data/airline_time.csv"
+    return pd.read_csv(path)
+
+@st.cache
+def load_route_data():
+    path = "data/routes.csv"
+    return pd.read_csv(path)
+
 def vis_airline_company():
     st.header("Airline company")
     st.write("Flight delay rate is an important factor when measuring the reliability of an airline company.")
@@ -36,7 +46,8 @@ def vis_airline_company():
     airlines = st.multiselect("Please choose airline companies",
                               options=[key + ':' + value for key, value in airline_name.items()],
                               default=["WN:Southwest Airlines", "AA:American Airlines",
-                                       "DL:Delta Airlines", "UA:United Airlines", "B6:JetBlue Airlines"])
+                                       "DL:Delta Airlines", "UA:United Airlines", "B6:JetBlue Airlines"],
+                              key='airlines')
     airlines_abbr = [x.split(":")[0] for x in airlines]
     df_airline = df[df["OP_UNIQUE_CARRIER"].isin(airlines_abbr)]
 
@@ -211,11 +222,148 @@ def vis_flight_destination():
     st.altair_chart(map_chart()) 
 
 
+def vis_flight_delay_distribution_over_time():
+    st.header("Flight delay distribution over time")
+    st.write("The color indicates the number of flights with the delay time (y-axis) on the given time categoary (x-axis) for a selected time scale. The size of circle indicates the percentage (likelihood) of a delay time occured on each time categoary. Randomly sample 5000 from the data for efficient computation purpose.")
+    scale = st.radio("Please select a time scale",
+                          ("Quarter", "Month", "Day of Week"), key='scale')
+    st.altair_chart(plot_delay_over_time(scale)) 
+
+
+def plot_delay_over_time(scale):
+
+    time_scale_dic = {"Quarter": "QUARTER", "Month": "MONTH", "Day of Week": "DAY_OF_WEEK"}
+    airlines = ['WN','AA','OO','DL','UA','B6','YX','NK']
+    df_time = load_airline_time_data()
+    df_time = df_time[df_time["ARR_DELAY"] < 400]
+    df_time = df_time[df_time["OP_UNIQUE_CARRIER"].isin(airlines)]
+    df_time = df_time.sample(5000, random_state=0)
+    
+    pts = alt.selection(type="single", encodings=['x'])
+    # "QUARTER" "%s:N"%(time_scale_dic[scale])
+
+    rect = alt.Chart(df_time).mark_rect().encode(
+                alt.Y("ARR_DELAY:Q", bin=True),
+                alt.X("%s:N"%(time_scale_dic[scale])),
+                color="count()"
+            ).transform_filter(
+                pts
+            )
+    rect.width = 750
+    rect.height = 400
+
+    circle = alt.Chart(df_time).transform_bin(
+                "ARR_DELAY_bin", field="ARR_DELAY"
+            ).transform_filter(
+                pts
+            ).transform_joinaggregate(
+                total="count()",
+                groupby=["ARR_DELAY_bin"]
+            ).transform_joinaggregate(
+                in_group="count()",
+                groupby=["ARR_DELAY_bin", "%s"%(time_scale_dic[scale])]
+            ).transform_calculate(
+                PERCENT_BY_ARR_DELAY=alt.datum.in_group / alt.datum.total
+            ).mark_circle().encode(
+                alt.Y("ARR_DELAY:Q", bin=True, axis=alt.Axis(title="Delay Time (minutes)", titleFontSize=14)),
+                alt.X("%s:N"%(time_scale_dic[scale]), axis=alt.Axis(title=scale, titleFontSize=14, labelAngle=0)),
+                alt.Size("PERCENT_BY_ARR_DELAY:Q", scale=alt.Scale(range=[0, 2000]), legend=alt.Legend(format='%', title='Percentage')),
+                tooltip=["%s:N"%(time_scale_dic[scale]), "count()", alt.Tooltip('PERCENT_BY_ARR_DELAY:Q', format='.2f'),]
+            )
+    circle.width = 750
+    circle.height = 400
+
+    bar = alt.Chart(df_time).mark_bar().encode(
+        x=alt.X('OP_UNIQUE_CARRIER:N', sort='-y', axis=alt.Axis(title="Operating Carrier", labelAngle=0, titleFontSize=14)),
+        y=alt.Y('count()', axis=alt.Axis(titleFontSize=14)),
+        color=alt.condition(pts, alt.ColorValue("steelblue"), alt.ColorValue("grey")),
+        tooltip=['OP_UNIQUE_CARRIER:N', 'count()']
+    ).properties(
+        width=750,
+        height=200
+    ).add_selection(pts)
+
+    fig = alt.vconcat(
+        rect + circle,
+        bar
+    ).resolve_legend(
+        color="independent",
+        size="independent"
+    )
+    
+    return fig
+
+
+def vis_flight_delay_distribution_over_location():
+    st.header("Flight delay distribution over origin and destination")
+    st.write("The circle indicate the number of flights departed from this airport. The larger circle means the larger airport hub. The edge indicates the flight between the two airports. The thickness of the edge indicates the number of flights between the two airports and the color of the edge indicates the average delay time between the two airports. Randomly sample 5000 from the data for efficient computation purpose.")
+    st.altair_chart(plot_delay_over_location()) 
+
+
+def plot_delay_over_location():
+    df_routes = load_route_data()
+    df_routes = df_routes[df_routes["ARR_DELAY"] < 400]
+    df_routes = df_routes.sample(5000, random_state=0)
+    
+    states = alt.topo_feature(data.us_10m.url, feature="states")
+
+    background = alt.Chart(states).mark_geoshape(
+        fill="lightgray",
+        stroke="white"
+    ).properties(
+        width=750,
+        height=500
+    ).project("albersUsa")
+
+    flights_airport = df_routes
+    select_city = alt.selection_single(
+        on="mouseover", nearest=True, fields=["ORIGIN"], empty="none"
+    )
+
+    connections = alt.Chart(flights_airport
+    ).transform_filter(
+        (alt.datum.ORIGIN_STATE != "PR") & (alt.datum.ORIGIN_STATE != "VI") & (alt.datum.DEST_STATE != "PR") & (alt.datum.DEST_STATE != "VI")
+    ).transform_joinaggregate(
+        Count="count()",
+        Avg_Delay='mean(ARR_DELAY)',
+        groupby=["ORIGIN", "DEST"]
+    ).mark_rule(opacity=0.35).encode(
+        latitude="ORIGIN_LAT:Q",
+        longitude="ORIGIN_LONG:Q",
+        latitude2="DEST_LAT:Q",
+        longitude2="DEST_LONG:Q",
+        size=alt.Size("Count:Q", scale=alt.Scale(range=[0, 500]), legend=None),
+        color=alt.Color("Avg_Delay:Q", scale=alt.Scale(scheme='yelloworangebrown', domain=[0, 200]), legend=alt.Legend(title='Average Delay (min)'))
+    ).transform_filter(
+        select_city
+    )
+
+    points = alt.Chart(flights_airport
+    ).transform_filter(
+        (alt.datum.ORIGIN_STATE != "PR") & (alt.datum.ORIGIN_STATE != "VI") & (alt.datum.DEST_STATE != "PR") & (alt.datum.DEST_STATE != "VI")
+    ).transform_joinaggregate(
+        Total_Flights="count()",
+        groupby=["ORIGIN"]
+    ).mark_circle().encode(
+        latitude="ORIGIN_LAT:Q",
+        longitude="ORIGIN_LONG:Q",
+        size=alt.Size("Total_Flights:Q", scale=alt.Scale(range=[0, 1000]), legend=None),
+        order=alt.Order("Total_Flights:Q", sort="descending"),
+        tooltip=["ORIGIN:N", "Total_Flights:Q"]
+    ).add_selection(
+        select_city
+    )
+
+    return (background + connections + points).configure_view(stroke=None)
+
+
 def vis():
     st.write("# Which factors lead to flight delay?")
     vis_airline_company()
     vis_flight_time()
     vis_flight_distance()
     vis_flight_destination()
+    vis_flight_delay_distribution_over_time()
+    vis_flight_delay_distribution_over_location()
 
 vis()
