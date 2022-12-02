@@ -16,6 +16,12 @@ In this report, we give an overview of our dataset, outline how we built our int
 
 ## Related Work
 
+Our project is situated among previous works in visualization flight data and recommender systems with interactive visualizations.
+
+### Visualizing Flight Data
+
+### Recommeder Systems with Interactive Visualizations
+
 ## Methods
 
 ### Data Processing
