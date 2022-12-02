@@ -15,7 +15,7 @@ Short (~250 words) abstract of the concrete data science problem and how the sol
 
 #### Data Cleaning and Augmentation
 
-Our dataset of flight delays is from the [Bureau of Transportation Statistics - On-Time : Marketing Carrier On-Time Performance dataset](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGK&QO_fu146_anzr=b0-gvzr). The full dataset is very large (many millions of data points) - spanning from January 2018 to August 2022 with over 100 fields. For the purpose of this project, we select a subset of the data from January 2021 to December 2021 and include only 23 fields. The 23 fields are:
+We use a dataset containing flight delay records from the [Bureau of Transportation Statistics - On-Time : Marketing Carrier On-Time Performance](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGK&QO_fu146_anzr=b0-gvzr). The full dataset is very large (many millions of data points) - spanning from January 2018 to August 2022 with over 100 fields. For the purpose of this project, we select a subset of the data from January 2021 to December 2021 and include only 23 fields. The 23 fields are:
 * Time information (YEAR, QUARTER, MONTH, DAY_OF_MONTH, DAY_OF_WEEK) - We include this to uncover correlations between time and flight delays. We also hypothesize that day of the week (e.g. Monday) will influence flight delays.
 * Flight carrier (OP_UNIQUE_CARRIER, OP_CARRIER_FL_NUM) - We include this to uncover correlations between flight carriers (e.g. United Airlines) and flight delays.
 * Location information (ORIGIN, DEST, DISTANCE) - We include this to uncover correlations between location/distance and flight delays.
@@ -50,9 +50,19 @@ These explorations provide us with the following inspirations:
 
 <img src="image/img_4.png" alt="drawing" width="30%"/><img src="image/img_5.png" alt="drawing" width="30%"/><img src="image/img_6.png" alt="drawing" width="30%"/><img src="image/img_7.png" alt="drawing" width="30%"/><img src="image/img_8.png" alt="drawing" width="30%"/><img src="image/img_9.png" alt="drawing" width="30%"/><img src="image/img_10.png" alt="drawing" width="30%"/><img src="image/img_11.png" alt="drawing" width="30%"/>
 
+### Interface
+
+We use Streamlit for our interface implementation. Our app is a multipage app containing the Home page, the Prediction page, and the Visualization page. We use [Streamlit Extras](https://github.com/arnaudmiribel/streamlit-extras) to support page switching buttons. We use caching (`@st.cache()`) for intensive operations such as downloading the data file hosted on Google Drive.
+
+The Home page gives a quick introduction of the project and an overview of the dataset the project is built on. The user may view the full dataset from an expander. In addition, two buttons lead to the other two pages.
+
+The Prediction page is allows users to fill in their flight information in a form. The form has various input fields such as an airline selection box, date picker, and text input fields. We have some basic data validation such as checking if the flight number is numeric and whether the arrival and departure airports are different. Based on user-provided details, we predict probabilities that the flight will be delayed or cancelled (see Machine Learning Model section).
+
+The Visualization page presents our data explorations with several interactive data visualizations (see Visualization section and Results section). The user may play around with various inputs based on their interests.
+
 ### Visualization
 
-The main challenge we faced when doing visualization was choosing the best charts for our data.
+We use Altair and Matplotlib for our visualizations implementation. The main challenge we faced when doing visualization was choosing the best charts for our data.
 
 + Box Plot
 
@@ -102,7 +112,7 @@ To sum up, flight time is also an important factor leading to flight delay. Long
 
 We then drew a binned scattered plot to identify the relationship between delay time and flight distance. The data points in the plot are grouped into bins with a circle in each bin to represent the amount of flights in that bin and its percentage to the total number of flights.
 
-<div align=center><img width="700" height="300" src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report3.png"/></div>
+<div align=center><img width="600" height="300" src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/report3.png"/></div>
 
 It can be seen in the plot that flight distance seems not to be a key factor to delay time.
 
