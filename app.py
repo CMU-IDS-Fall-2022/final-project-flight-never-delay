@@ -59,8 +59,8 @@ if __name__ == '__main__':
     with st.expander("View full dataset"):
         st.subheader("Dataset")
         st.dataframe(df)
-        if st.checkbox("Generate data profile (this takes several minutes as the dataset is large)"):
-            profiler(df)
+#         if st.checkbox("Generate data profile (this takes several minutes as the dataset is large)"):
+#             profiler(df)
     
     # nav = st.sidebar.radio("Navigation",
     #                  ("Introduction", "Visualization", "Prediction"))
