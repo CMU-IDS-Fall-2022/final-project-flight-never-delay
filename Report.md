@@ -107,6 +107,16 @@ We used binned scatter plots to investigate the relationship between flight dela
 
 
 ### Machine Learning Model
+Linear and logistic regression models are trained to predict the delay time for each reason and the probability of flight cancellation. 
+
+#### Data Preprocessing for ML Models
+When training the models, we only kept the flight information accessible to the travelers as the input. Therefore, the inputs include the date, day of the week, scheduled departure time, scheduled arrival time, origin, destination, carrier, and flight number. We performed one-hot encoding on the categorical features such as carrier, origin, and destination. We also standardized the numerical features to allow a better performance for the scikit-learn package.
+
+#### Delay Time Prediction
+Five linear regression models were trained to predict the delay time for each of the delay reasons (career, weather, National Airspace System, security, late aircraft). The total delay time is calculated by adding the five predicted delay times together. Mean absolute errors were calculated to evaluate the performance on the validation set. We also explored some shallow neural networks but did not see much performance difference. 
+
+#### Cancellation Probability Prediction
+A logistic regression model was trained to predict the possibility of cancellation. The accuracy on the validation set is 91%. The probability is predicted with the predict_proba(X) function in the scikit-learn logistic regression model, which estimate the probability of each label class.
 
 
 
