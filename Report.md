@@ -1,6 +1,7 @@
 # Final Project Report
 
-**Project URL**: TODO
+**Project URL**: https://cmu-ids-fall-2022-final-project-flight-never-delay-app-v0b442.streamlit.app/
+
 **Video URL**: TODO
 
 Short (~250 words) abstract of the concrete data science problem and how the solutions addresses the problem.
@@ -24,18 +25,19 @@ We use a dataset containing flight delay records from the [Bureau of Transportat
 
 Our uncleaned dataset contains 6,311,871 data points.
 
-<img src="image/img_1.png" alt="uncleaned dataset" width="700"/>
+<img src="image/img_1.png" alt="uncleaned dataset" width="500"/>
 
 For data cleaning, we first drop duplicates and remove data points that contain empty fields. Then, we separate flights that are delayed and cancelled. For delayed flights, we data points that do not have a delay reason (e.g. one of CARRIER_DELAY, WEATHER_DELAY, NAS_DELAY, SECURITY_DELAY, LATE_AIRCRAFT_DELAY). For canceled flights, we similarly remove data points that do not have a cancellation reason (CANCELLATION_CODE).
 
 We also augment our dataset with more fine-grained geographic information as we would like to create a geographic map to visualize the flight delays. Therefore, we map airport location (ORIGIN, DEST) to US state names and coordinates (latitude and longitude) from a [Kaggle dataset](https://www.kaggle.com/datasets/usdot/flight-delays?select=airports.csv). This adds 6 more fields to our dataset (ORIGIN_STATE, ORIGIN_LAT, ORIGIN_LONG, DEST_STATE, DEST_LAT, DEST_LONG). We remove data points that include airports with unknown geographical locations.
 
 Our final dataset contains 1,141,693 data points with 29 fields.
-<img src="image/img_2.png" alt="cleaned dataset" width="700"/>
+
+<img src="image/img_2.png" alt="cleaned dataset" width="500"/>
 
 #### Data Exploration
 
-<img src="image/img_3.png" alt="basic data exploration" width="500"/>
+<img src="image/img_3.png" alt="basic data exploration" width="400"/>
 
 We explored the relationship between DEP_DELAY and factors including MONTH, DAY_OF_MONTH, DAY_OF_WEEK, OP_UNIQUE_CARRIER, ORIGIN, DEST, DEP_TIME, and DISTANCE.
 These explorations provide us with the following inspirations:
@@ -54,29 +56,41 @@ These explorations provide us with the following inspirations:
 
 We use Streamlit for our interface implementation. Our app is a multipage app containing the Home page, the Prediction page, and the Visualization page. We use [Streamlit Extras](https://github.com/arnaudmiribel/streamlit-extras) to support page switching buttons. We use caching (`@st.cache()`) for intensive operations such as downloading the data file hosted on Google Drive.
 
+#### Home Page
+
 The Home page gives a quick introduction of the project and an overview of the dataset the project is built on. The user may view the full dataset from an expander. In addition, two buttons lead to the other two pages.
+
+<img src="image/home_interface.png" alt="home interface" width="400"/>
+
+#### Prediction Page
 
 The Prediction page allows users to fill in their flight information in a form. The form has various input fields such as an airline selection box, date picker, and text input fields. We have some basic data validation such as checking if the flight number is numeric and whether the arrival and departure airports are different. Based on user-provided details, we predict probabilities that the flight will be delayed or cancelled (see Machine Learning Model section).
 
+<img src="image/prediction_interface.png" alt="prediction interface" width="400"/>
+
+#### Visualization Page
+
 The Visualization page presents our data explorations with several interactive data visualizations (see Visualization section and Results section). The user may play around with various input parameters based on their data exploration interests.
+
+<img src="image/visualization_interface.png" alt="visualization interface" width="400"/>
 
 ### Visualization
 
 We use Altair and Matplotlib for our visualizations implementation. The main challenge we faced when doing visualization was choosing the best charts for our data.
 
-+ Box Plot
+#### Box Plot
 
 We used box plots to show distributions of flight delay values based on airline companies and flight departure time. They can display the five-number summary of a group of data. The five-number summary includes the minimum, first quartile, median, third quartile, and maximum.
 
-+ Binned Scatter Plot
+#### Binned Scatter Plot
 
 We used binned scatter plots to investigate the relationship between flight delay time and flight distance. The data points in a binned scatter plot are grouped into bins, and an aggregate statistic is used to summarize each bin. For example, we can use a circular area to represent the count and show the density of data points.
 
-+ Map
+#### Map
 
 
 
-+ Interactive Chart with Cross-Highlight
+#### Interactive Chart with Cross-Highlight
 
 
 
@@ -88,7 +102,7 @@ We used binned scatter plots to investigate the relationship between flight dela
 
 We studied the relationship between flight delay time and some factors including airline companies, flight departure time, flight distance and flight destination.
 
-+ Airline Companies
+### Airline Companies
 
 We firstly compared the delay time based on airline companies in a box plot. The median and the interquartile range in each box well demonstrate the performance of each airline in flight delay. Alaska Airlines, Southwest Airlines and Delta Airlines are the best 3 performers. Some airlines like Skywest Airlines and JetBlue Airlines do need to pay more attention to their flight delay issues.
 
@@ -100,7 +114,7 @@ With the new categories of delay, it is easy to observe that the proportion of d
 
 To sum up, airline companies behave very much differently in dealing with flight delay problems. It is safe to deduce that choosing an airline company would influence flight delay.
 
-+ Flight Departure Time
+### Flight Departure Time
 
 We then sketched another box plot to study the distributions of flight delay time values based on flight departure time (Quarter / Month / Day of Week). It can be observed that: (1) a long flight delay is more likely to happen in Quarter 2 & 3 than in Quarter 1 & 4; (2) it is more likely to encounter a flight delay on Monday.
 
@@ -108,7 +122,7 @@ We then sketched another box plot to study the distributions of flight delay tim
 
 To sum up, flight time is also an important factor leading to flight delay. Long flight delays are more likely to happen during the summer or on Monday.
 
-+ Flight Distance
+### Flight Distance
 
 We then drew a binned scattered plot to identify the relationship between delay time and flight distance. The data points in the plot are grouped into bins with a circle in each bin to represent the amount of flights in that bin and its percentage to the total number of flights.
 
@@ -116,7 +130,7 @@ We then drew a binned scattered plot to identify the relationship between delay 
 
 It can be seen in the plot that flight distance seems not to be a key factor to delay time.
 
-+ Flight Destination
+### Flight Destination
 
 
 
