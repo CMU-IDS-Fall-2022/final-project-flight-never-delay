@@ -64,8 +64,15 @@ def vis_airline_company():
              "Alaska Airlines, Southwest Airlines and Delta Airlines are the best 3 performers. "
              "Some airlines like Skywest Airlines and JetBlue Airlines do need to pay more attention to their flight delay issues.")
     fig2 = plt.figure(figsize=(10, len(airlines_abbr) * 1.5))
-    ax = sns.boxplot(data=df_airline, x="ARR_DELAY", y="OP_UNIQUE_CARRIER", showfliers=False, width=0.4)
+    ax = sns.boxplot(data=df_airline, x="ARR_DELAY", y="OP_UNIQUE_CARRIER", showfliers=False, width=0.4, palette='Spectral')
     ax.yaxis.label.set_visible(False)
+    # change the plot box color
+    for i, artist in enumerate(ax.patches):
+        # Set the linecolor on the artist to the facecolor, and set the facecolor to None
+        col = artist.get_facecolor()
+        artist.set_edgecolor(col)    
+
+    
     new_labels = [airline_name[x.get_text()] for x in ax.get_yticklabels()]
     ax.set_yticklabels(new_labels)
     plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
@@ -84,7 +91,7 @@ def vis_airline_company():
              "Although SouthWest Airlines has the largest number of flight delays, these delays are mainly "
              "small delays and the company maintains a pretty good on-time rate.")
     fig1 = plt.figure(figsize=(10, len(airlines_abbr)*1.5))
-    ax = sns.countplot(data=df_airline, y="OP_UNIQUE_CARRIER", hue="TYPE")
+    ax = sns.countplot(data=df_airline, y="OP_UNIQUE_CARRIER", hue="TYPE", palette='Spectral')
     ax.yaxis.label.set_visible(False)
     new_labels = [airline_name[x.get_text()] for x in ax.get_yticklabels()]
     ax.set_yticklabels(new_labels)
@@ -110,7 +117,12 @@ def vis_flight_time():
     if time_scale == "Quarter":
         st.write("It can be observed that a long flight delay is more likely to happen in Quarter 2 & 3 than in Quarter 1 & 4.")
         fig = plt.figure(figsize=(10, 4*1.5))
-        ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="QUARTER", showfliers=False, orient="h", width=0.4)
+        ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="QUARTER", showfliers=False, orient="h", width=0.4, palette='Spectral')
+        # change the plot box color
+        for i, artist in enumerate(ax.patches):
+            # Set the linecolor on the artist to the facecolor, and set the facecolor to None
+            col = artist.get_facecolor()
+            artist.set_edgecolor(col)   
         plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
         plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
         plt.ylabel('Quarter', fontsize=16, weight='bold', labelpad=10)
@@ -119,7 +131,11 @@ def vis_flight_time():
     elif time_scale == "Month":
         st.write("It can be observed that summer is the peak season for flight delays.")
         fig = plt.figure(figsize=(10, 12 * 1))
-        ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="MONTH", showfliers=False, orient="h", width=0.4)
+        ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="MONTH", showfliers=False, orient="h", width=0.4, palette='Spectral')
+        for i, artist in enumerate(ax.patches):
+            # Set the linecolor on the artist to the facecolor, and set the facecolor to None
+            col = artist.get_facecolor()
+            artist.set_edgecolor(col)  
         plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
         plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
         plt.ylabel('Month', fontsize=16, weight='bold', labelpad=10)
@@ -128,7 +144,11 @@ def vis_flight_time():
     else:
         st.write("It can be observed that it is more likely to encounter a flight delay on Monday.")
         fig = plt.figure(figsize=(10, 7 * 1))
-        ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="DAY_OF_WEEK", showfliers=False, orient="h", width=0.4)
+        ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="DAY_OF_WEEK", showfliers=False, orient="h", width=0.4, palette='Spectral')
+        for i, artist in enumerate(ax.patches):
+            # Set the linecolor on the artist to the facecolor, and set the facecolor to None
+            col = artist.get_facecolor()
+            artist.set_edgecolor(col)  
         plt.setp(ax.get_yticklabels(), fontsize=10, weight='bold', rotation=0)
         plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
         plt.ylabel('Day of Week', fontsize=16, weight='bold', labelpad=10)
@@ -143,7 +163,7 @@ def vis_flight_distance():
              "and flight distance. The data points in the plot are grouped into bins with a circle in each bin to "
              "represent the amount of flights in that bin and its percentage to the total number of flights.")
     data_type = st.radio("Please select a data type",
-                          ("Percentage", "Amount"))
+                          ("Amount", "Percentage"))
     df = load_distance_data()
     df_distance = df[["DISTANCE", "ARR_DELAY"]]
     def delay_type(x):
@@ -176,25 +196,26 @@ def vis_flight_distance():
             groupby=["ARR_DELAY_bin", "DISTANCE"]
         ).transform_calculate(
             percentage=alt.datum.in_group / alt.datum.total
-        ).mark_circle().encode(
+        ).mark_circle(color= '#66c2a5').encode(
             alt.X("ARR_DELAY:Q", bin=True, axis=alt.Axis(title="Delay Time (minutes)", titleFontSize=20)),
             alt.Y("DISTANCE", bin=True, axis=alt.Axis(title="Flight Distance (miles)", titleFontSize=20)),
-            alt.Size("percentage:Q", legend=alt.Legend(format='%', title='Percentage', titleFontSize=15))
+            alt.Size("percentage:Q", legend=alt.Legend(format='%', title='Percentage', titleFontSize=15)),
+            tooltip=[alt.Tooltip('percentage:Q')]
         )
-        fig1.width = 750
+        fig1.width = 800
         fig1.height = 400
         st.altair_chart(fig1)
     else:
-        fig2 = alt.Chart(df_distance).mark_circle().encode(
+        fig2 = alt.Chart(df_distance).mark_circle(color= '#66c2a5').encode(
             alt.X("ARR_DELAY:Q", bin=True, axis=alt.Axis(title="Delay Time (minutes)", titleFontSize=20)),
             alt.Y("DISTANCE:Q", bin=True, axis=alt.Axis(title="Flight Distance (miles)", titleFontSize=20)),
-            size="count()"
+            size="count()",
+            tooltip=["count()"]
         )
-        fig2.width = 750
+        fig2.width = 800
         fig2.height = 400
         st.altair_chart(fig2)
     st.write("It can be seen in the plot that flight distance seems not to be a key factor to delay time.")
-
 
 def map_chart():
     states = alt.topo_feature(data.us_10m.url, feature='states')
@@ -207,15 +228,21 @@ def map_chart():
     geo_data.columns = ['abbr', 'time']
     geo_data = pd.merge(geo_data, ansi, how='left', on='abbr')
     alt_fig = alt.Chart(states).mark_geoshape().encode(
-        color='time:Q',
-        tooltip=['state:N', alt.Tooltip('time:Q')]
+        #color='time:Q',
+        tooltip=['state:N', alt.Tooltip('time:Q')],
+        color=alt.Color("time:Q", scale=alt.Scale(scheme='lightmulti'))
+        # tooltip=['state:N', alt.Tooltip('time:Q')]
 	).transform_lookup(
         lookup='id',
         from_=alt.LookupData(geo_data, 'id', ['time','state'])
 	).project(
         type='albersUsa'
 	)
-    return base + alt_fig
+    fig = base + alt_fig
+    fig.width = 800
+    fig.height = 400
+    return fig
+    
 
 def vis_flight_destination():
     st.header("Flight destination")
@@ -245,7 +272,7 @@ def plot_delay_over_time(scale):
     rect = alt.Chart(df_time).mark_rect().encode(
                 alt.Y("ARR_DELAY:Q", bin=True),
                 alt.X("%s:N"%(time_scale_dic[scale])),
-                color="count()"
+                color = alt.Color("count()", scale=alt.Scale(scheme='lightmulti'))
             ).transform_filter(
                 pts
             )
@@ -264,11 +291,11 @@ def plot_delay_over_time(scale):
                 groupby=["ARR_DELAY_bin", "%s"%(time_scale_dic[scale])]
             ).transform_calculate(
                 PERCENT_BY_ARR_DELAY=alt.datum.in_group / alt.datum.total
-            ).mark_circle().encode(
+            ).mark_circle(color= '#66c2a5').encode(
                 alt.Y("ARR_DELAY:Q", bin=True, axis=alt.Axis(title="Delay Time (minutes)", titleFontSize=14)),
                 alt.X("%s:N"%(time_scale_dic[scale]), axis=alt.Axis(title=scale, titleFontSize=14, labelAngle=0)),
                 alt.Size("PERCENT_BY_ARR_DELAY:Q", scale=alt.Scale(range=[0, 2000]), legend=alt.Legend(format='%', title='Percentage')),
-                tooltip=["%s:N"%(time_scale_dic[scale]), "count()", alt.Tooltip('PERCENT_BY_ARR_DELAY:Q', format='.2f'),]
+                tooltip=["%s:N"%(time_scale_dic[scale]), "count()", alt.Tooltip('PERCENT_BY_ARR_DELAY:Q', format='.2f')]
             )
     circle.width = 750
     circle.height = 400
@@ -276,7 +303,7 @@ def plot_delay_over_time(scale):
     bar = alt.Chart(df_time).mark_bar().encode(
         x=alt.X('OP_UNIQUE_CARRIER:N', sort='-y', axis=alt.Axis(title="Operating Carrier", labelAngle=0, titleFontSize=14)),
         y=alt.Y('count()', axis=alt.Axis(titleFontSize=14)),
-        color=alt.condition(pts, alt.ColorValue("steelblue"), alt.ColorValue("grey")),
+        color=alt.condition(pts, alt.ColorValue("#5aa6bb"), alt.ColorValue("lightgrey")),
         tooltip=['OP_UNIQUE_CARRIER:N', 'count()']
     ).properties(
         width=750,
@@ -308,7 +335,7 @@ def plot_delay_over_location():
     states = alt.topo_feature(data.us_10m.url, feature="states")
 
     background = alt.Chart(states).mark_geoshape(
-        fill="lightgray",
+        fill="#ecf4f6",
         stroke="white"
     ).properties(
         width=750,
@@ -327,13 +354,13 @@ def plot_delay_over_location():
         Count="count()",
         Avg_Delay='mean(ARR_DELAY)',
         groupby=["ORIGIN", "DEST"]
-    ).mark_rule(opacity=0.35).encode(
+    ).mark_rule(opacity=0.5).encode(
         latitude="ORIGIN_LAT:Q",
         longitude="ORIGIN_LONG:Q",
         latitude2="DEST_LAT:Q",
         longitude2="DEST_LONG:Q",
         size=alt.Size("Count:Q", scale=alt.Scale(range=[0, 500]), legend=None),
-        color=alt.Color("Avg_Delay:Q", scale=alt.Scale(scheme='yelloworangebrown', domain=[0, 200]), legend=alt.Legend(title='Average Delay (min)'))
+        color=alt.Color("Avg_Delay:Q", scale=alt.Scale(scheme='lightmulti', domain=[0, 200]), legend=alt.Legend(title='Average Delay (min)'))
     ).transform_filter(
         select_city
     )
@@ -344,7 +371,7 @@ def plot_delay_over_location():
     ).transform_joinaggregate(
         Total_Flights="count()",
         groupby=["ORIGIN"]
-    ).mark_circle().encode(
+    ).mark_circle(color= '#66c2a5').encode(
         latitude="ORIGIN_LAT:Q",
         longitude="ORIGIN_LONG:Q",
         size=alt.Size("Total_Flights:Q", scale=alt.Scale(range=[0, 1000]), legend=None),
