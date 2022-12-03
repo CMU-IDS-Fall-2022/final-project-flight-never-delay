@@ -185,7 +185,7 @@ def vis_flight_time():
         plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
         st.pyplot(fig)
     else:
-        st.write("It can be observed that it is more likely to encounter a flight delay on Monday.")
+        st.write("It can be observed that it is more likely to encounter a flight delay on Sunday.")
         fig = plt.figure(figsize=(10, 7 * 1))
         ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="DAY_OF_WEEK", showfliers=False, orient="h", width=0.4, palette='Spectral')
         for i, artist in enumerate(ax.patches):
