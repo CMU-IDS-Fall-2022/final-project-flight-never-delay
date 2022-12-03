@@ -7,6 +7,7 @@
 Short (~250 words) abstract of the concrete data science problem and how the solutions addresses the problem.
 
 ## Introduction
+
 As frequent travelers, our group members often experience flight delays. Flight delays can be heavily disrupted to travel schedules, such as missing important events or having to book extra nights for accomodation. However, this is no good way for us to know whether a flight will be delayed, until at the final moment. In this project, we aim to address this problem by predicting potential flight delays through analyzing past flight delay records. Specifically, we ask the following two questions to guide our exploration:
 
 1. What are the main factors that serve as the causes of flight delays? To answer this question, we perform exploratory data analysis and describe our results through several interactive data visualizations.
@@ -16,11 +17,13 @@ In this report, we give an overview of our dataset, outline how we built our int
 
 ## Related Work
 
-Our project is situated among previous works in visualization flight data and recommender systems with interactive visualizations.
+Our project is situated among previous works in visualizing flight data and data analysis on flight delays.
 
 ### Visualizing Flight Data
+Several works have visualized flight data, often using a geographic map. [FlowingData](https://flowingdata.com/2015/11/25/thanksgiving-flight-patterns/) visualizes US flight patterns during Thanksgivings. [Cooper Hewitt, Smithsonian Design Museum](https://www.cooperhewitt.org/2015/08/05/flight-patterns/) showcases a 56-second animation by designer Aaron Koblin of flight paths across the US. [Utrecht University](https://webspace.science.uu.nl/~telea001/InfoVis/FlightVis) visualizes US flight patterns with bundling and density detection techniques. [Hui Zhao](https://www.huizhaodesign.com/data-visualization) visualizes global flight paths. [FlightMapper.io](https://flightmapper.io/) provides a tool for creating 3D flight path visualizations. In this project, we also visualize flight patterns with a geographic map. However, we additionally encode flight delay time information within the interactive visualization. Furthermore, we dive deep into the various factors that may have caused flight delays through a narrative with additional interactive visualizations.
 
-### Recommeder Systems with Interactive Visualizations
+### Flight Delays Data Analysis
+Various data science projects have worked on analyzing flight delay data. Several notable examples on Kaggle include projects by [Fabien Daniel](https://www.kaggle.com/code/fabiendaniel/predicting-flight-delays-tutorial), [Hakki Kaan Simsek](https://www.kaggle.com/code/hakkisimsek/plotly-tutorial-2), [Miquar](https://www.kaggle.com/code/miquar/explore-flights-csv-airports-csv-airlines-csv), [Manasi Chhibber](https://www.kaggle.com/code/manasichhibber/flight-delay-predictions), and [DSEverything](https://www.kaggle.com/code/dongxu027/airline-delays-eda-deep-dive-lessons-learned). Nonetheless, the visualizations in the projects are mostly simplistic, such as bar charts and matrix plots, with little interaction. In this project, we explore more advanced visualizations and give users more interactability.
 
 ## Methods
 
