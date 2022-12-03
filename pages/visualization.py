@@ -36,6 +36,11 @@ def load_route_data():
     path = "data/routes.csv"
     return pd.read_csv(path)
 
+@st.cache
+def load_origin_data():
+    path = "data/origin.csv"
+    return pd.read_csv(path)
+
 def vis_airline_company():
     st.header("Airline company")
     st.write("Flight delay rate is an important factor when measuring the reliability of an airline company.")
@@ -217,7 +222,7 @@ def vis_flight_distance():
         st.altair_chart(fig2)
     st.write("It can be seen in the plot that flight distance seems not to be a key factor to delay time.")
 
-def map_chart():
+def destination_map():
     states = alt.topo_feature(data.us_10m.url, feature='states')
     base = alt.Chart(states).mark_geoshape(fill='lightgray', stroke='black', strokeWidth=0.5)
     df = load_destination_data()
@@ -228,25 +233,50 @@ def map_chart():
     geo_data.columns = ['abbr', 'time']
     geo_data = pd.merge(geo_data, ansi, how='left', on='abbr')
     alt_fig = alt.Chart(states).mark_geoshape().encode(
-        #color='time:Q',
-        tooltip=['state:N', alt.Tooltip('time:Q')],
-        color=alt.Color("time:Q", scale=alt.Scale(scheme='lightmulti'))
-        # tooltip=['state:N', alt.Tooltip('time:Q')]
-	).transform_lookup(
+        color='time:Q',
+        tooltip=['state:N', alt.Tooltip('time:Q')]
+    ).transform_lookup(
         lookup='id',
         from_=alt.LookupData(geo_data, 'id', ['time','state'])
-	).project(
+    ).project(
         type='albersUsa'
-	)
-    fig = base + alt_fig
-    fig.width = 800
-    fig.height = 400
-    return fig
-    
+    ).properties(
+        width=750
+    )
+    return base + alt_fig
 
 def vis_flight_destination():
     st.header("Flight destination")
-    st.altair_chart(map_chart()) 
+    st.altair_chart(destination_map()) 
+
+def origin_map():
+    states = alt.topo_feature(data.us_10m.url, feature='states')
+    base = alt.Chart(states).mark_geoshape(fill='lightgray', stroke='black', strokeWidth=0.5)
+    df = load_origin_data()
+    ansi = pd.read_csv('https://www2.census.gov/geo/docs/reference/state.txt', sep='|')
+    ansi.columns = ['id', 'abbr', 'state', 'statens']
+    ansi = ansi[['id', 'state', 'abbr']]
+    geo_data = df.groupby('ORIGIN_STATE')['ARR_DELAY'].mean().reset_index()
+    geo_data.columns = ['abbr', 'time']
+    geo_data = pd.merge(geo_data, ansi, how='left', on='abbr')
+    alt_fig = alt.Chart(states).mark_geoshape().encode(
+        color='time:Q',
+        tooltip=['state:N', alt.Tooltip('time:Q')]
+    ).transform_lookup(
+        lookup='id',
+        from_=alt.LookupData(geo_data, 'id', ['time','state'])
+    ).project(
+        type='albersUsa'
+    ).properties(
+        width=750
+    )
+    return base + alt_fig
+
+
+def vis_flight_origin():
+    st.header("Flight origin")
+    st.altair_chart(origin_map()) 
+
 
 
 def vis_flight_delay_distribution_over_time():
@@ -390,6 +420,7 @@ def vis():
     vis_flight_time()
     vis_flight_distance()
     vis_flight_destination()
+    vis_flight_origin()
     vis_flight_delay_distribution_over_time()
     vis_flight_delay_distribution_over_location()
 
