@@ -230,18 +230,18 @@ def destination_map():
     ansi.columns = ['id', 'abbr', 'state', 'statens']
     ansi = ansi[['id', 'state', 'abbr']]
     geo_data = df.groupby('DEST_STATE')['ARR_DELAY'].mean().reset_index()
-    geo_data.columns = ['abbr', 'time']
+    geo_data.columns = ['abbr', 'Delay Time']
     geo_data = pd.merge(geo_data, ansi, how='left', on='abbr')
     alt_fig = alt.Chart(states).mark_geoshape().encode(
-        color='time:Q',
-        tooltip=['state:N', alt.Tooltip('time:Q')]
+        color = alt.Color('Delay Time:Q', scale=alt.Scale(scheme='lightmulti')),
+        tooltip=['state:N', alt.Tooltip('Delay Time:Q')]
     ).transform_lookup(
         lookup='id',
-        from_=alt.LookupData(geo_data, 'id', ['time','state'])
+        from_=alt.LookupData(geo_data, 'id', ['Delay Time','state'])
     ).project(
         type='albersUsa'
     ).properties(
-        width=750
+        width=800
     )
     return base + alt_fig
 
@@ -257,18 +257,18 @@ def origin_map():
     ansi.columns = ['id', 'abbr', 'state', 'statens']
     ansi = ansi[['id', 'state', 'abbr']]
     geo_data = df.groupby('ORIGIN_STATE')['ARR_DELAY'].mean().reset_index()
-    geo_data.columns = ['abbr', 'time']
+    geo_data.columns = ['abbr', 'Delay Time']
     geo_data = pd.merge(geo_data, ansi, how='left', on='abbr')
     alt_fig = alt.Chart(states).mark_geoshape().encode(
-        color='time:Q',
-        tooltip=['state:N', alt.Tooltip('time:Q')]
+        color = alt.Color('Delay Time:Q', scale=alt.Scale(scheme='lightmulti')),
+        tooltip=['state:N', alt.Tooltip('Delay Time:Q')]
     ).transform_lookup(
         lookup='id',
-        from_=alt.LookupData(geo_data, 'id', ['time','state'])
+        from_=alt.LookupData(geo_data, 'id', ['Delay Time','state'])
     ).project(
         type='albersUsa'
     ).properties(
-        width=750
+        width=800
     )
     return base + alt_fig
 
