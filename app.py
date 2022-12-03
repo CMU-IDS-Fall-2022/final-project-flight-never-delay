@@ -48,10 +48,10 @@ if __name__ == '__main__':
     st.set_page_config(page_title='Flight Never Delay', page_icon = '✈️', layout = 'centered', initial_sidebar_state = 'expanded')
     intro()
     st.write("Click on one of the following buttons to continue.")
-    if st.button("Predict my flight! 🧠"):
-        switch_page("Prediction")
     if st.button("Visualize correlations in the data! 📊"):
         switch_page("Visualization")
+    if st.button("Predict my flight! 🧠"):
+        switch_page("Prediction")
     st.markdown("""---""")
     filename = "data-coordinates.csv"
     get_data(filename)

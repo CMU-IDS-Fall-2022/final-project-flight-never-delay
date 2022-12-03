@@ -42,11 +42,26 @@ def load_origin_data():
     return pd.read_csv(path)
 
 def vis_airline_company():
-    st.header("Airline company")
-    st.write("Flight delay rate is an important factor when measuring the reliability of an airline company.")
-    st.write("\"Which airline has the worst/best delay rate in 2021?\"")
-    st.write("In this part, we have selected top 10 airlines with the most flights in 2021 and would like to explore "
-             "how they hehave in dealing with the flight delay issues.")
+    st.markdown(
+        """
+        ## Chapter I. Check out factors that matter
+        """
+        )
+    st.markdown(
+        """
+        ### 1. Airline company matters to flight delay!
+        """
+        )
+    st.markdown(
+        """
+        Flight delay rate is an important factor when measuring the reliability of an airline company. \n
+        **"Which airline has the worst/best delay rate in 2021?"** \n
+        In this part, we have selected top 10 airlines with the most flights in 2021 and would like to explore how they hehave in dealing with the flight delay issues. \n
+        Firstly, we compared the delay time in a box plot. The median and the interquartile range in each box well demonstrate the performance of each airline in flight delay. Alaska Airlines, Southwest Airlines and Delta Airlines are the best 3 performers. Some airlines like Skywest Airlines and JetBlue Airlines do need to pay more attention to their flight delay issues.
+        """
+        )
+
+    
     df = load_airline_data()
     airlines = st.multiselect("Please choose airline companies",
                               options=[key + ':' + value for key, value in airline_name.items()],
@@ -63,11 +78,7 @@ def vis_airline_company():
             return 1
         return 2
     df_airline["TYPE"] = df_airline["ARR_DELAY"].apply(delay_type)
-
-    st.write("Firstly, we compared the delay time in a box plot. "
-             "The median and the interquartile range in each box well demonstrate the performance of each airline in flight delay. "
-             "Alaska Airlines, Southwest Airlines and Delta Airlines are the best 3 performers. "
-             "Some airlines like Skywest Airlines and JetBlue Airlines do need to pay more attention to their flight delay issues.")
+    
     fig2 = plt.figure(figsize=(10, len(airlines_abbr) * 1.5))
     ax = sns.boxplot(data=df_airline, x="ARR_DELAY", y="OP_UNIQUE_CARRIER", showfliers=False, width=0.4, palette='Spectral')
     ax.yaxis.label.set_visible(False)
@@ -75,8 +86,7 @@ def vis_airline_company():
     for i, artist in enumerate(ax.patches):
         # Set the linecolor on the artist to the facecolor, and set the facecolor to None
         col = artist.get_facecolor()
-        artist.set_edgecolor(col)    
-
+        artist.set_edgecolor(col)  
     
     new_labels = [airline_name[x.get_text()] for x in ax.get_yticklabels()]
     ax.set_yticklabels(new_labels)
@@ -84,17 +94,27 @@ def vis_airline_company():
     plt.setp(ax.get_xticklabels(), fontsize=10, weight='bold', rotation=0)
     plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
     st.pyplot(fig2)
-
-    st.write("Based on the box plot, we identified that the delay time could be "
-             "categorized into <20 minutes, 20-60 minutes, and >60 minutes. "
-             "If it is smaller than 20, it is approximately on time. "
-             "If it is between 20 and 60, it is a small delay that most people can tolerate. "
-             "If it is larger than 60, the flight encounters a serious delay.")
-    st.write("With the new categories of delay, it is easy to observe that the proportion of delays varies from "
-             "airline to airline. Some airlines like JetBlue Airlines behave badly. They have a relatively "
-             "low on-time rate and a relatively high large delay rate. "
-             "Although SouthWest Airlines has the largest number of flight delays, these delays are mainly "
-             "small delays and the company maintains a pretty good on-time rate.")
+    
+    st.markdown(
+        """
+        ##### Insights
+        """
+        )
+    st.markdown(
+        """
+        - **Alaska Airlines, Southwest Airlines, and Delta Airlines are the best 3 performers.** \n
+        - **Some airlines like Skywest Airlines and JetBlue Airlines do need to pay more attention to their flight delay issues.** \n
+        \n
+        """
+        )  
+    
+    st.markdown(
+        """
+        Based on the box plot, we identified that the delay time could be categorized into <20 minutes, 20-60 minutes, and >60 minutes. If it is smaller than 20, it is approximately on time. If it is between 20 and 60, it is a small delay that most people can tolerate. If it is larger than 60, the flight encounters a serious delay. \n
+        With the new categories of delay, it is easy to observe that **the proportion of delays varies from airline to airline.**
+        """
+        )
+    
     fig1 = plt.figure(figsize=(10, len(airlines_abbr)*1.5))
     ax = sns.countplot(data=df_airline, y="OP_UNIQUE_CARRIER", hue="TYPE", palette='Spectral')
     ax.yaxis.label.set_visible(False)
@@ -108,19 +128,37 @@ def vis_airline_company():
     new_legend.get_texts()[2].set_text("large delay (>60 min)")
     plt.xlabel('Number of flights', fontsize=16, weight='bold', labelpad=10)
     st.pyplot(fig1)
-
-    st.write("To sum up, airline companies behave very much differently in dealing with flight delay problems. "
-             "It is safe to deduce that choosing an airline company would influence flight delay.")
+    
+    st.markdown(
+        """
+        ##### Insights
+        """
+        )
+    st.markdown(
+        """
+        - **Airline companies behave very much differently in dealing with flight delay problems. It is safe to deduce that choosing an airline company would influence flight delays.** \n
+        - **Some airlines like JetBlue Airlines behave badly. They have a relatively low on-time rate and a relatively high large delay rate.** \n
+        - **Although SouthWest Airlines has the largest number of flight delays, these delays are mainly small delays and the company maintains a pretty good on-time rate** \n
+        \n
+        """
+        )  
 
 def vis_flight_time():
-    st.header("Flight time")
-    st.write("Next, we would like to sketch a box plot to identify the relationship between delay time and "
-             "flight departure time (Quarter / Month / Day of Week).")
+    st.markdown(
+        """
+        ### 2. Prepared to be delayed when flying in summer and December
+        """
+        )
+    st.markdown(
+        """
+        Next, we would like to sketch a box plot to identify the relationship between delay time and flight departure time. Here, we allow users to select departure time by Quarter, Month, and Day of Week. 
+        """
+        )
+ 
     time_scale = st.radio("Please select a time scale",
                           ("Quarter", "Month", "Day of Week"))
     df_time = load_time_data()
     if time_scale == "Quarter":
-        st.write("It can be observed that a long flight delay is more likely to happen in Quarter 2 & 3 than in Quarter 1 & 4.")
         fig = plt.figure(figsize=(10, 4*1.5))
         ax = sns.boxplot(data=df_time, x="ARR_DELAY", y="QUARTER", showfliers=False, orient="h", width=0.4, palette='Spectral')
         # change the plot box color
@@ -159,15 +197,33 @@ def vis_flight_time():
         plt.ylabel('Day of Week', fontsize=16, weight='bold', labelpad=10)
         plt.xlabel('Delay time (minutes)', fontsize=16, weight='bold', labelpad=10)
         st.pyplot(fig)
-    st.write("To sum up, flight time is also an important factor leading to flight delay. "
-             "Long flight delays are more likely to happen during the summer or on Monday.")
+    
+    st.markdown(
+        """
+        ##### Insights
+        """
+        )
+    st.markdown(
+        """
+        - **Generally, a long flight delay is more likely to happen in Quarter 2 & 3 than in Quarter 1 & 4.** \n
+        - **However, there is also a relatively long flight delay in December, which might be caused by the holiday season.** \n
+        - **People are more likely to experience a long flight delay on Sundays possibly due to high volume of people need to go back to work from the weekends.** \n
+        \n
+        """
+        )  
 
 def vis_flight_distance():
-    st.header("Flight distance")
-    st.write("Even though we have "
-             "Next, we would like to sketch a binned scattered plot to identify the relationship between delay time "
-             "and flight distance. The data points in the plot are grouped into bins with a circle in each bin to "
-             "represent the amount of flights in that bin and its percentage to the total number of flights.")
+    st.markdown(
+        """
+        ### 3. Likely to be 30-min delay regardless of the distance
+        """
+        )
+    st.markdown(
+        """
+        Next, we would like to sketch a binned scattered plot to identify the relationship between delay time and flight distance. The data points in the plot are grouped into bins with a circle in each bin to represent the number of flights in that bin and its percentage of the total number of flights.
+        """
+        )
+
     data_type = st.radio("Please select a data type",
                           ("Amount", "Percentage"))
     df = load_distance_data()
@@ -221,46 +277,25 @@ def vis_flight_distance():
         fig2.width = 800
         fig2.height = 400
         st.altair_chart(fig2)
-    st.write("It can be seen in the plot that flight distance seems not to be a key factor to delay time.")
-
-def destination_map():
-    states = alt.topo_feature(data.us_10m.url, feature='states')
-    base = alt.Chart(states).mark_geoshape(fill='lightgray', stroke='black', strokeWidth=0.5)
-    df = load_destination_data()
-    df = df[df["ARR_DELAY"] < 400]
-    ansi = pd.read_csv('https://www2.census.gov/geo/docs/reference/state.txt', sep='|')
-    ansi.columns = ['id', 'abbr', 'state', 'statens']
-    ansi = ansi[['id', 'state', 'abbr']]
-    geo_data = df.groupby('DEST_STATE')['ARR_DELAY'].mean().reset_index()
-    geo_data.columns = ['abbr', 'Delay Time']
-    geo_data = pd.merge(geo_data, ansi, how='left', on='abbr')
-    alt_fig = alt.Chart(states).mark_geoshape().encode(
-        color = alt.Color('Delay Time:Q', scale=alt.Scale(scheme='lightmulti')),
-        tooltip=['state:N', alt.Tooltip('Delay Time:Q')]
-    ).transform_lookup(
-        lookup='id',
-        from_=alt.LookupData(geo_data, 'id', ['Delay Time','state'])
-    ).project(
-        type='albersUsa'
-    ).properties(
-        width=800
-    )
-    return base + alt_fig
-
-def vis_flight_destination():
-    st.header("Flight destination")
-    st.write("We are also interested the relationship between the delay time and destination. We want to see whether "
-             "there are some destinations that are likely to delay longer time than other places. The data points in the plot are "
-             "grouped into states. We caluculated the average delay time for the flights that arrives at each state."
-             "to avoid the impact of extreme data points, we only take delay times that are under 400 mins.")
-    st.altair_chart(destination_map())
-    st.write("We can see if you are planning to go to the north eastern part of the country, the flights might delay longer.") 
+    
+    st.markdown(
+        """
+        ##### Insights
+        """
+        )
+    st.markdown(
+        """
+        - **Flights usually delay around 30 minutes regardless of the travel distance.** \n
+        - **Surprisingly, long distance does not have a longer delay time, which might be due to the flights can fly faster to make up the lost time and mitigate the arrival delay.** \n
+        \n
+        """
+        )  
+ 
 
 def origin_map():
     states = alt.topo_feature(data.us_10m.url, feature='states')
     base = alt.Chart(states).mark_geoshape(fill='lightgray', stroke='black', strokeWidth=0.5)
     df = load_origin_data()
-    df = df[df["ARR_DELAY"] < 400]
     ansi = pd.read_csv('https://www2.census.gov/geo/docs/reference/state.txt', sep='|')
     ansi.columns = ['id', 'abbr', 'state', 'statens']
     ansi = ansi[['id', 'state', 'abbr']]
@@ -282,22 +317,119 @@ def origin_map():
 
 
 def vis_flight_origin():
-    st.header("Flight origin")
-    st.write("Same as the previous one, we also want to see relationship between the delay time and origins.")
+    st.markdown(
+        """
+        ### 4. Peace in mind when flying ‘In-N-Out’ on the West Coast
+        """
+        )
+    st.markdown(
+        """
+        We utilized choropleth maps to visualize the average flight delay time in different departure states and destination states. The closer the color is to red, the longer the delay in that state.
+        """
+        )
+    st.markdown(
+        """
+        **Flight Departure:**
+        """
+        )
     st.altair_chart(origin_map()) 
-    st.write("We can see from the map that if you departure from several states in the middle US (like North Dakota, Wyoming or Mississipi)"
-             "you might delay for longer time.")
 
+def destination_map():
+    states = alt.topo_feature(data.us_10m.url, feature='states')
+    base = alt.Chart(states).mark_geoshape(fill='lightgray', stroke='black', strokeWidth=0.5)
+    df = load_destination_data()
+    ansi = pd.read_csv('https://www2.census.gov/geo/docs/reference/state.txt', sep='|')
+    ansi.columns = ['id', 'abbr', 'state', 'statens']
+    ansi = ansi[['id', 'state', 'abbr']]
+    geo_data = df.groupby('DEST_STATE')['ARR_DELAY'].mean().reset_index()
+    geo_data.columns = ['abbr', 'Delay Time']
+    geo_data = pd.merge(geo_data, ansi, how='left', on='abbr')
+    alt_fig = alt.Chart(states).mark_geoshape().encode(
+        color = alt.Color('Delay Time:Q', scale=alt.Scale(scheme='lightmulti')),
+        tooltip=['state:N', alt.Tooltip('Delay Time:Q')]
+    ).transform_lookup(
+        lookup='id',
+        from_=alt.LookupData(geo_data, 'id', ['Delay Time','state'])
+    ).project(
+        type='albersUsa'
+    ).properties(
+        width=800
+    )
+    return base + alt_fig
 
+def vis_flight_destination():
+    st.markdown(
+        """
+        **Flight Destination:**
+        """
+        )
+    st.altair_chart(destination_map())
+
+    st.markdown(
+        """
+        ##### Insights
+        """
+        )
+    st.markdown(
+        """
+        - **Departure and arrival flights in North Dakota are likely to be delayed for a longer period of time.** \n
+        - **Flights arriving on the West Coast are more likely to be on time.** \n
+        - **Flights departing from Washington and Georgia are more likely to be on time.** \n
+        \n
+        """
+        ) 
+    st.markdown(
+        """
+        ### Summary
+        """
+        )
+    st.markdown(
+        """
+        For this part of the visualization, we mostly employed a single factor and identified that airline company, flight time, and departure/arriving hub are the key factors that correlate with a flight delay. 
+        """
+        ) 
+
+    st.markdown(
+        """
+        ## Chapter II. Make a better decision by integrating multiple factors
+        """
+        )
+    st.markdown(
+        """
+        In this Chapter, we are going to help our users make a better decision by taking into multiple factors into consideration.
+        """
+        )
 
 def vis_flight_delay_distribution_over_time():
-    st.header("Flight delay distribution over time")
-    st.write("To further discuss the relationship between delay time and different timestamp, we take a look at the delay time. The color indicates the number of flights with the delay time (y-axis) on the given time categoary (x-axis) for a selected time scale. The size of circle indicates the percentage (likelihood) of a delay time occured on each time categoary. Randomly sample 5000 from the data for efficient computation purpose.")
+    st.markdown(
+        """
+        ### 1. Watch out for your timing and your carrier
+        """
+        )
+    st.markdown(
+        """
+        In order to see how timings and airline companies would influence the flight delay together, we would like to use an interactive chart with cross-highlights. We randomly sampled 5000 from the data for efficient computation purposes. Here in the chart, the color indicates the number of flights with the delay time (y-axis) on the given time category (x-axis) for a selected time scale. The size of the circle indicates the percentage (likelihood) of a delay time occurring on each time categoary. Meanwhile, users can filter an airline by selecting from the bar plot below and see the performance of different airlines. 
+
+        """
+        )
     scale = st.radio("Please select a time scale",
                           ("Quarter", "Month", "Day of Week"), key='scale')
     st.altair_chart(plot_delay_over_time(scale)) 
-    st.write("If we choose quarter at the above chart, we can see that quarter 3 has the most number of flights thats delay under 40 mins, it seems that quarter 3 might be a good choice to fly. But if we take a look at the percentage(likelyhood) of a delay time happend in each quarter, we can see that quarter 1 actually has the highest percentage of flights that delay under 40 mins, which means, if you travel in quarter 1, you'll have higher chance to delay for a little while. Likewise, we can also see March and Wednesday has the lowest chances of delay higher than 40. These time might be the better choice for flying.")
-    st.write("We could also spect the distribution for specfic airlines. Take American Airline (AA) as an example, we can see Wednesday has most flights and lowest delay rate, which makes Wednesday a best choice for AA. Same for quarters and months.")
+
+    st.markdown(
+        """
+        ##### Insights
+        """
+        )
+    st.markdown(
+        """
+        - **Comparing United Airlines with Delta Airlines (with a similar number of flights), we can see United Airlines is more likely to have longer delays than Delta.** \n
+        - **Longer delays (350-400min) happen more frequently in December compared to the other months, which might be caused by the holiday season.** \n
+        - **The shorter and medium delays (50-300min) happen more frequently from June-August, which might indicate that people travel more often in summertime.** \n
+        - **There are fewer flights from January-April, which might indicate that fewer people choose to travel during this time.** \n
+        \n
+        """
+        ) 
 
 
 def plot_delay_over_time(scale):
@@ -305,7 +437,7 @@ def plot_delay_over_time(scale):
     time_scale_dic = {"Quarter": "QUARTER", "Month": "MONTH", "Day of Week": "DAY_OF_WEEK"}
     airlines = ['WN','AA','OO','DL','UA','B6','YX','NK']
     df_time = load_airline_time_data()
-    df_time = df_time[df_time["ARR_DELAY"] < 200]
+    df_time = df_time[df_time["ARR_DELAY"] < 400]
     df_time = df_time[df_time["OP_UNIQUE_CARRIER"].isin(airlines)]
     df_time = df_time.sample(5000, random_state=0)
     
@@ -319,7 +451,7 @@ def plot_delay_over_time(scale):
             ).transform_filter(
                 pts
             )
-    rect.width = 600
+    rect.width = 700
     rect.height = 400
 
     circle = alt.Chart(df_time).transform_bin(
@@ -328,10 +460,10 @@ def plot_delay_over_time(scale):
                 pts
             ).transform_joinaggregate(
                 total="count()",
-                groupby=["%s"%(time_scale_dic[scale])]
+                groupby=["ARR_DELAY_bin"]
             ).transform_joinaggregate(
                 in_group="count()",
-                groupby=["%s"%(time_scale_dic[scale]), "ARR_DELAY_bin"]
+                groupby=["ARR_DELAY_bin", "%s"%(time_scale_dic[scale])]
             ).transform_calculate(
                 PERCENT_BY_ARR_DELAY=alt.datum.in_group / alt.datum.total
             ).mark_circle(color= '#66c2a5').encode(
@@ -340,7 +472,7 @@ def plot_delay_over_time(scale):
                 alt.Size("PERCENT_BY_ARR_DELAY:Q", scale=alt.Scale(range=[0, 2000]), legend=alt.Legend(format='%', title='Percentage')),
                 tooltip=["%s:N"%(time_scale_dic[scale]), "count()", alt.Tooltip('PERCENT_BY_ARR_DELAY:Q', format='.2f')]
             )
-    circle.width = 600
+    circle.width = 700
     circle.height = 400
 
     bar = alt.Chart(df_time).mark_bar().encode(
@@ -349,7 +481,7 @@ def plot_delay_over_time(scale):
         color=alt.condition(pts, alt.ColorValue("#5aa6bb"), alt.ColorValue("lightgrey")),
         tooltip=['OP_UNIQUE_CARRIER:N', 'count()']
     ).properties(
-        width=600,
+        width=750,
         height=200
     ).add_selection(pts)
 
@@ -364,12 +496,47 @@ def plot_delay_over_time(scale):
     return fig
 
 
+
 def vis_flight_delay_distribution_over_location():
-    st.header("Flight delay distribution over origin and destination")
-    st.write("Finally, we want to see whether there are some specific routes between cities are especially likely to delay. "
-             "The circle indicate the number of flights departed from this airport. We can see there are some larger airport hub where the circles are larger. If we hover on one airport, we can see all the routes that departs from this airport. The width of the connection indicates the number of flights between the two airports and the color of the edge indicates the average delay time between the two airports. Let's take Chicago ORD airport as an example. We can see it has most frequent flights to Los Angles, and the delay time is relatively low. However if you go to Rhode Island from Chicago, there will be less flights options and there are higher chances for delay.")
-    st.write("P.S. We randomly sampled 5000 from the dataset for efficient computation purpose.")
+    st.markdown(
+        """
+        ### 2. Worry less when traveling between big hubs
+        """
+        )
+    st.markdown(
+        """
+        Now that we understand how the timings and airline companies could influence the flight delay, we would like to explore the relationship between average delay time and the route of the flights. To better visualize the frequency of the route, we also included the number of flights on each route consideration. \n
+        The circle indicates the number of flights that departed from this airport. The larger circle means the larger airport hub. The edge indicates the flight between the two airports. The thickness of the edge indicates the number of flights between the two airports and the color of the edge indicates the average delay time between the two airports. Randomly sample 5000 from the data for efficient computation purposes.
+        """
+        )
     st.altair_chart(plot_delay_over_location()) 
+    st.markdown(
+        """
+        ##### Insights
+        """
+        )
+    st.markdown(
+        """
+        - **The average delay time of flights between two big hubs is shorter than that of flights from a big hub to a smaller airport, which might be due to the airports prioritizing flights between two big hubs. For example, hovering over DEN, we could see that the longest average delays are among small airports (circles with a smaller size).** \n
+        - **Smaller airports usually only connect to a few big hubs and are likely to have longer average delay times. For example, airport CRW only have flights to ORD and ATL, both having large average delay time.** \n
+        \n
+        """
+        ) 
+    st.markdown(
+        """
+        ### Summary
+        """
+        )
+    st.markdown(
+        """
+        Flight carrier, flying time, and flying origin and destination are the most important factors that impact flight delay. On the other hand, the traveling distance does not impact the delay.
+        """
+        )
+    st.markdown(
+        """
+        #### Now, are you more aware of what flights to choose to avoid delaying?
+        """
+        )
 
 
 def plot_delay_over_location():
@@ -383,7 +550,7 @@ def plot_delay_over_location():
         fill="#ecf4f6",
         stroke="white"
     ).properties(
-        width=750,
+        width=800,
         height=500
     ).project("albersUsa")
 
@@ -404,7 +571,7 @@ def plot_delay_over_location():
         longitude="ORIGIN_LONG:Q",
         latitude2="DEST_LAT:Q",
         longitude2="DEST_LONG:Q",
-        size=alt.Size("Count:Q", scale=alt.Scale(range=[0, 500]), legend=None),
+        size=alt.Size("Count:Q", scale=alt.Scale(range=[0, 500]), legend=alt.Legend(title='Number of Flights')),
         color=alt.Color("Avg_Delay:Q", scale=alt.Scale(scheme='lightmulti', domain=[0, 200]), legend=alt.Legend(title='Average Delay (min)'))
     ).transform_filter(
         select_city
@@ -426,7 +593,12 @@ def plot_delay_over_location():
         select_city
     )
 
-    return (background + connections + points).configure_view(stroke=None)
+    fig = (background + connections + points).configure_view(stroke=None)
+    fig.width = 800
+    fig.height = 500  
+    
+    return fig
+    
 
 
 def vis():
@@ -434,8 +606,8 @@ def vis():
     vis_airline_company()
     vis_flight_time()
     vis_flight_distance()
-    vis_flight_destination()
     vis_flight_origin()
+    vis_flight_destination()
     vis_flight_delay_distribution_over_time()
     vis_flight_delay_distribution_over_location()
 
