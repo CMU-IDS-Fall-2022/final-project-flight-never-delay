@@ -100,10 +100,15 @@ We used binned scatter plots to investigate the relationship between flight dela
 
 #### Map
 
-
+We used Maps to explore the relationship between flight delay time and geographical features like states or cities. With the map, we can show the delay amount/average time at a give place along with their geographic distribution. 
 
 #### Interactive Chart with Cross-Highlight
 
+The reason we want to show a cross-highlight chart is to tell apart the amount of delay flights and the percentage of delay flights. With higher overall flight amount, there will be more delay flights, but that doesn't mean there is higher chance of delay. So we used the cross-highlight chart to put delay amount & percentage side by side. And we added an interactive bar chart as brush to provide more detailed insight about specfic Airlines.
+
+#### Interactive Chart with Maps & Connections
+
+To provide more detailed insights about the geographical distribution, we used maps with interactive dots to show the connections between places. In this way we can see the delay amount/average time between the origin and destination cities along with their geographic distribution. 
 
 
 ### Machine Learning Model
@@ -154,8 +159,43 @@ It can be seen in the plot that flight distance seems not to be a key factor to 
 
 ### Flight Destination
 
+We are also interested the relationship between the delay time and destination. We want to see whether there are some destinations that are likely to delay longer time than other places. The data points in the plot are grouped into states. We caluculated the average delay time for the flights that arrives at each state.to avoid the impact of extreme data points, we only take delay times that are under 400 mins.
+
+<div align=center><img width="600"  src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/flight_destination.png"/></div>
+
+We can see if you are planning to go to the north eastern part of the country, the flights might delay longer.
+
+### Flight Origin
+
+Same as the previous one, we also want to see relationship between the delay time and origins.
+
+<div align=center><img width="600"  src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/flight_origin.png"/></div>
+
+We can see from the map that if you departure from several states in the middle US (like North Dakota, Wyoming or Mississipi)you might delay for longer time.
+
+### Flight Distribution Over Time
+
+To further discuss the relationship between delay time and different timestamp, we take a look at the delay time. The color indicates the number of flights with the delay time (y-axis) on the given time categoary (x-axis) for a selected time scale. The size of circle indicates the percentage (likelihood) of a delay time occured on each time categoary. Randomly sample 5000 from the data for efficient computation purpose.
+
+<div align=center><img width="600"  src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/quarter_delay_distribution.png"/></div>
+
+If we choose quarter at the above chart, we can see that quarter 3 has the most number of flights thats delay under 40 mins, it seems that quarter 3 might be a good choice to fly. But if we take a look at the percentage(likelyhood) of a delay time happend in each quarter, we can see that quarter 1 actually has the highest percentage of flights that delay under 40 mins, which means, if you travel in quarter 1, you'll have higher chance to delay for a little while. Likewise, we can also see March and Wednesday has the lowest chances of delay higher than 40. These time might be the better choice for flying.
+
+<div align=center><img width="600"  src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/AA_week_delay.png"/></div>
+
+We could also spect the distribution for specfic airlines. Take American Airline (AA) as an example, we can see Wednesday has most flights and lowest delay rate, which makes Wednesday a best choice for AA. Similar ideas can be applied to quarters and months.
 
 
+### Flight Delay Distribution over Origin and Destination
+Finally, we want to see whether there are some specific routes between cities are especially likely to delay. The circle indicate the number of flights departed from this airport. We can see there are some larger airport hub where the circles are larger. If we hover on one airport, we can see all the routes that departs from this airport. The width of the connection indicates the number of flights between the two airports and the color of the edge indicates the average delay time between the two airports.
+
+<div align=center><img width="600"  src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/orgin_dest_distribution.png"/></div>
+
+Let's take Chicago ORD airport as an example. We can see it has most frequent flights to Los Angles, and the delay time is relatively low. However if you go to Rhode Island from Chicago, there will be less flights options and there are higher chances for delay.
+
+<div align=center><img width="600"  src="https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/image/Chicago.png"/></div>
+
+P.S. We randomly sampled 5000 from the dataset for efficient computation purpose.
 ## Discussion
 
 ## Future Work
