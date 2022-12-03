@@ -84,7 +84,7 @@ The Prediction page allows users to fill in their flight information in a form. 
 
 The Visualization page presents our data explorations with several interactive data visualizations (see Visualization section and Results section). The user may play around with various input parameters based on their data exploration interests.
 
-<img src="image/visualization_interface.png" alt="visualization interface" width="400"/>
+<img src="image/visualization.png" alt="visualization interface" width="400"/>
 
 ### Visualization
 
