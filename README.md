@@ -5,7 +5,7 @@
   * Contact person: 
   * xiandax@andrew.cmu.edu
   * hanxiaoz@andrew.cmu.edu
-  * TODO@andrew.cmu.edu
+  * qianruzh@andrew.cmu.edu
   * TODO@andrew.cmu.edu
 
 <img src="image/Chicago.png" alt="summary image" width="500"/>
