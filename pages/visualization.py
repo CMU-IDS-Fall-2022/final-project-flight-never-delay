@@ -56,8 +56,8 @@ def vis_airline_company():
         """
         Flight delay rate is an important factor when measuring the reliability of an airline company. \n
         **"Which airline has the worst/best delay rate in 2021?"** \n
-        In this part, we have selected top 10 airlines with the most flights in 2021 and would like to explore how they hehave in dealing with the flight delay issues. \n
-        Firstly, we compared the delay time in a box plot. The median and the interquartile range in each box well demonstrate the performance of each airline in flight delay. Alaska Airlines, Southwest Airlines and Delta Airlines are the best 3 performers. Some airlines like Skywest Airlines and JetBlue Airlines do need to pay more attention to their flight delay issues.
+        In this part, we have selected the top 10 airlines with the most flights in 2021 and would like to explore how they behave in dealing with flight delay issues. \n
+        Firstly, we compared the delay time in a box plot. The median and the interquartile range in each box well demonstrate the performance of each airline in a flight delay. Alaska Airlines, Southwest Airlines, and Delta Airlines are the best 3 performers. Some airlines like Skywest Airlines and JetBlue Airlines do need to pay more attention to their flight delay issues.
         """
         )
 
@@ -207,7 +207,7 @@ def vis_flight_time():
         """
         - **Generally, a long flight delay is more likely to happen in Quarter 2 & 3 than in Quarter 1 & 4.** \n
         - **However, there is also a relatively long flight delay in December, which might be caused by the holiday season.** \n
-        - **People are more likely to experience a long flight delay on Sundays possibly due to high volume of people need to go back to work from the weekends.** \n
+        - **People are more likely to experience a long flight delay on Sundays possibly due to a high volume of people needing to go back to work from the weekends.** \n
         \n
         """
         )  
@@ -396,7 +396,7 @@ def vis_flight_destination():
         )
     st.markdown(
         """
-        In this Chapter, we are going to help our users make a better decision by taking into multiple factors into consideration.
+        In this Chapter, we are going to help our users make better decisions by taking multiple factors into consideration.
         """
         )
 
@@ -408,7 +408,7 @@ def vis_flight_delay_distribution_over_time():
         )
     st.markdown(
         """
-        In order to see how timings and airline companies would influence the flight delay together, we would like to use an interactive chart with cross-highlights. We randomly sampled 5000 from the data for efficient computation purposes. Here in the chart, the color indicates the number of flights with the delay time (y-axis) on the given time category (x-axis) for a selected time scale. The size of the circle indicates the percentage (likelihood) of a delay time occurring on each time categoary. Meanwhile, users can filter an airline by selecting from the bar plot below and see the performance of different airlines. 
+        In order to see how timings and airline companies would influence the flight delay together, we would like to use an interactive chart with cross-highlights. We randomly sampled 5000 from the data for efficient computation purposes. Here in the chart, the color indicates the number of flights with the delay time (y-axis) on the given time category (x-axis) for a selected time scale. The size of the circle indicates the percentage (likelihood) of a delay time occurring in each time category. Meanwhile, users can filter an airline by selecting from the bar plot below and see the performance of different airlines.
 
         """
         )
@@ -425,7 +425,7 @@ def vis_flight_delay_distribution_over_time():
         """
         - **Comparing United Airlines with Delta Airlines (with a similar number of flights), we can see United Airlines is more likely to have longer delays than Delta.** \n
         - **Longer delays (350-400min) happen more frequently in December compared to the other months, which might be caused by the holiday season.** \n
-        - **The shorter and medium delays (50-300min) happen more frequently from June-August, which might indicate that people travel more often in summertime.** \n
+        - **The shorter and medium delays (50-300min) happen more frequently in June-August, which might indicate that people travel more often in the summertime.** \n
         - **There are fewer flights from January-April, which might indicate that fewer people choose to travel during this time.** \n
         \n
         """
@@ -534,7 +534,8 @@ def vis_flight_delay_distribution_over_location():
         )
     st.markdown(
         """
-        #### Now, are you more aware of what flights to choose to avoid delaying?
+        #### Now, are you more aware of what flights to choose to avoid delays? \n
+        #### Don't worry if you are still not sure, we also have another tool for you!
         """
         )
 
