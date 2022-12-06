@@ -6,7 +6,8 @@
   * xiandax@andrew.cmu.edu
   * hanxiaoz@andrew.cmu.edu
   * qianruzh@andrew.cmu.edu
-  * TODO@andrew.cmu.edu
+  * shiyingp@andrew.cmu.edu
+  * chuanenl@andrew.cmu.edu
 
 <img src="image/Chicago.png" alt="summary image" width="500"/>
 
@@ -17,8 +18,8 @@
 **Video:**
 
 ## Work distribution
-
-Update towards the end of the project.
+David is in charge of the data processing work and the app page design.
+Shiying takes over all the prediction part. Bryce, Qianru, and Hazel work collaboratively on the data exploration, visualization, and narration part. To be more specific, Bryce mainly explores the data and works on visualizing the relationship between delay time and airline companie and  delay time and distance. Qianru works on the visualization between delay time and destination & origin and the two interactive charts. Hazel works on further exploring data, polishing the two interactive charts, all chart visuals and the entire narratives.
 
 ## Deliverables
 
