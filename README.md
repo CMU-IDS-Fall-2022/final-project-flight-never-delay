@@ -15,7 +15,7 @@
 
 **Report:** https://github.com/CMU-IDS-Fall-2022/final-project-flight-never-delay/blob/main/Report.md
 
-**Video:**
+**Video:** https://drive.google.com/file/d/1SGJAjCLsh8vuxgSJQfiV-qC55o2PHIZ-/view?usp=share_link
 
 ## Work distribution
 David is in charge of the data processing work and the app page design.
@@ -37,4 +37,4 @@ Shiying takes over all the prediction part. Bryce, Qianru, and Hazel work collab
 - [x] All code for the project should be in the repo.
 - [x] Update the **Online URL** above to point to your deployed project.
 - [x] A detailed [project report](Report.md).  Each student should submit the URL that points to this file in their github repo on Canvas.
-- [ ] A 5 minute video demonstration.  Upload the video to this github repo and link to it from your report.
+- [x] A 5 minute video demonstration.  Upload the video to this github repo and link to it from your report.
