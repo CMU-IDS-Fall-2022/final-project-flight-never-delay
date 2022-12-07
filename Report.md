@@ -2,7 +2,7 @@
 
 **Project URL**: https://cmu-ids-fall-2022-final-project-flight-never-delay-app-v0b442.streamlit.app/
 
-**Video URL**: TODO
+**Video URL**: https://drive.google.com/file/d/1SGJAjCLsh8vuxgSJQfiV-qC55o2PHIZ-/view?usp=share_link
 
 **Abstract**: As frequent travelers, our group members often experience flight delays. However, there is no good way for us to know whether a flight will be delayed in advance. In this project, we aim to address this problem by predicting potential flight delays through analyzing past flight delay records. We first perform exploratory data analysis on various factors that may cause flight delays. We lead the user through our analysis with a narrative and several interactive visualizations. Based on our analysis, we recommend travelers to pick airlines companies with better track records such as Alaska Airlines, Southwest Airlines, and Delta Airlines, to be prepared to be delayed when traveling in seasonal peaks such as during the summer or in December, and to transfer through bigger hubs as much as possible, especially more advanced hubs in the West Coast such as Seattle, San Fransico, and Los Angeles. Finally, we offer the user a prediction model that, given flight details, predicts how long a flight may be delayed for and its possible causes.
 
